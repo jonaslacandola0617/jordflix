@@ -16,9 +16,9 @@ export function withLatestQuery(query: string) {
 const defaultQueries = "include_adult=false&include_video=false&language=en-US";
 const queries = withLatestQuery(defaultQueries);
 
-export async function getMovies() {
+export async function getMovies(page = 1) {
   const res = await fetch(
-    `${apiUrl}/discover/movie?${queries}&api_key=${apiKey}`
+    `${apiUrl}/discover/movie?${queries}&sort_by=popularity.desc&page=${page}&api_key=${apiKey}`
   );
   const { results: movies }: { results: IDiscoverMovie[] } = await res.json();
 
@@ -26,7 +26,7 @@ export async function getMovies() {
 }
 
 export async function getMovie(id: number) {
-  const res = await fetch(`${apiUrl}/movie?api_key=${id}`);
+  const res = await fetch(`${apiUrl}/movie/${id}?api_key=${apiKey}`);
 
   const movie = await res.json();
 

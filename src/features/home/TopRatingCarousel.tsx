@@ -5,23 +5,31 @@ import {
   CarouselContent,
   CarouselItem,
 } from "@/components/ui/carousel";
+import { Skeleton } from "@/components/ui/skeleton";
 import useTopRated from "@/features/home/useTopRated";
 import { ArrowBigUpDash } from "lucide-react";
 import { useNavigate } from "react-router";
 
 function TopRatingCarousel() {
-  const { data: topRated } = useTopRated();
+  const { isLoading, data: topRated } = useTopRated();
   const navigate = useNavigate();
 
   function watchNow(id: number) {
-    navigate(`/movies/${id}`);
+    navigate(`/movies/watch/${id}`);
   }
+
+  if (isLoading)
+    return (
+      <div className="w-full">
+        <Skeleton className="w-full h-[720px]" />
+      </div>
+    );
 
   return (
     <Carousel className="w-full" opts={{ loop: true }}>
       <CarouselContent>
         {topRated?.map((movie) => (
-          <CarouselItem className="px-0">
+          <CarouselItem key={movie.id} className="px-0">
             <AspectRatio ratio={16 / 6}>
               <div className="relative w-full h-full">
                 <img
@@ -61,7 +69,7 @@ function TopRatingCarousel() {
                       onClick={() => watchNow(movie.id)}
                       className="animate-pulse hover:cursor-pointer"
                     >
-                      Watch Now
+                      <span>Watch Now</span>
                     </Button>
                   </div>
                 </div>

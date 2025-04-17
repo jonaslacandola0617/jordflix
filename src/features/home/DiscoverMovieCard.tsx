@@ -13,16 +13,26 @@ import {
   CardHeader,
 } from "@/components/ui/card";
 import { ArrowBigDownDash, ArrowBigUpDash } from "lucide-react";
+import { useNavigate } from "react-router";
 
-type LatestCardProp = {
+type DiscoverMovieCardProp = {
   movie: IDiscoverMovie;
 };
 
-function MovieHomeCard({ movie }: LatestCardProp) {
+function DiscoverMovieCard({ movie }: DiscoverMovieCardProp) {
+  const navigate = useNavigate();
+
+  function watch() {
+    navigate(`/movies/watch/${movie.id}`);
+  }
+
   return (
     <TooltipProvider>
       <Tooltip delayDuration={300}>
-        <Card className="min-h-96 p-0 gap-0 overflow-hidden">
+        <Card
+          className="min-h-96 p-0 gap-0 overflow-hidden hover:cursor-pointer"
+          onClick={() => watch()}
+        >
           <CardHeader className="p-0">
             <AspectRatio ratio={9 / 12}>
               <img
@@ -60,4 +70,4 @@ function MovieHomeCard({ movie }: LatestCardProp) {
   );
 }
 
-export default MovieHomeCard;
+export default DiscoverMovieCard;

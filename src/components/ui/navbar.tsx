@@ -7,6 +7,7 @@ import {
   NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu";
 import { Link } from "react-router";
+import { Switch } from "./switch";
 
 export default function Navbar() {
   return (
@@ -47,6 +48,11 @@ export default function Navbar() {
             <NavigationMenuLink asChild>
               <Link to="/tv-series">TV Series</Link>
             </NavigationMenuLink>
+          </NavigationMenuItem>
+          <NavigationMenuItem>
+            <div className="flex items-center gap-2">
+              <Switch />
+            </div>
           </NavigationMenuItem>
         </NavigationMenuList>
       </NavigationMenu>

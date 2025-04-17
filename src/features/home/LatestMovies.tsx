@@ -5,7 +5,7 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
-import MovieHomeCard from "@/features/home/MovieHomeCard";
+import DiscoverMovieCard from "@/features/home/DiscoverMovieCard";
 import useLatest from "@/features/home/useLatest";
 
 function LatestMovies() {
@@ -14,11 +14,11 @@ function LatestMovies() {
   return (
     <>
       <h1 className="text-xl p-4">Latest Movies</h1>
-      <Carousel opts={{ slidesToScroll: 2 }}>
+      <Carousel opts={{ slidesToScroll: 2 }} className="mb-4">
         <CarouselContent>
           {latest?.map((movie) => (
-            <CarouselItem className="basis-1/6">
-              <MovieHomeCard movie={movie} />
+            <CarouselItem key={movie.id} className="basis-1/6">
+              <DiscoverMovieCard movie={movie} />
             </CarouselItem>
           ))}
         </CarouselContent>
