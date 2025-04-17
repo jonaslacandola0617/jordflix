@@ -9,7 +9,7 @@ import useTopRated from "@/features/home/useTopRated";
 import { ArrowBigUpDash } from "lucide-react";
 import { useNavigate } from "react-router";
 
-function TopCarousel() {
+function TopRatingCarousel() {
   const { data: topRated } = useTopRated();
   const navigate = useNavigate();
 
@@ -42,12 +42,20 @@ function TopCarousel() {
                   </div>
                   <div className="w-1/4 flex flex-col gap-3">
                     <p className="text-lg">{movie.title}</p>
-                    <p className="text-sm flex gap-0.5 items-center">
-                      <span>
-                        {Number(movie.vote_average).toPrecision(2)}/10
-                      </span>
-                      <ArrowBigUpDash />
-                    </p>
+                    <div className="flex items-center gap-2">
+                      <p className="text-sm">
+                        {new Date(movie.release_date)
+                          .toDateString()
+                          .replace(/^[A-Za-z]{3}/, "")}
+                      </p>
+                      <span>/</span>
+                      <p className="text-sm flex gap-0.5 items-center">
+                        <span>
+                          {Number(movie.vote_average).toPrecision(2)}/10
+                        </span>
+                        <ArrowBigUpDash />
+                      </p>
+                    </div>
                     <p className="text-sm text-left mb-2">{movie.overview}</p>
                     <Button
                       onClick={() => watchNow(movie.id)}
@@ -66,4 +74,4 @@ function TopCarousel() {
   );
 }
 
-export default TopCarousel;
+export default TopRatingCarousel;

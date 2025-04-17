@@ -5,7 +5,7 @@ const apiUrl = import.meta.env.VITE_API_URL;
 
 export function withLatestQuery(query: string) {
   const date = new Date();
-  date.setMonth(date.getMonth() - 1);
+  // date.setMonth(date.getMonth() - 1);
   date.setDate(1);
 
   const maximum = date.toISOString().split("T")[0];
@@ -56,8 +56,15 @@ export async function getTopRatedMovies() {
   return topRated;
 }
 
+export async function getTrendingMovies() {
+  const res = await fetch(`${apiUrl}/trending/movie/week?api_key=${apiKey}`);
+  const { results: trending }: { results: IDiscoverMovie[] } = await res.json();
+
+  return trending;
+}
+
 export async function getMovieGenres() {
-  const res = await fetch(`${apiUrl}/genre/movie/list?${apiKey}`);
+  const res = await fetch(`${apiUrl}/genre/movie/list?api_key=${apiKey}`);
   const { genres }: { genres: IGenre } = await res.json();
 
   return genres;
