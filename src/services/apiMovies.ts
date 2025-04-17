@@ -49,7 +49,7 @@ export async function getTopRatedMovies() {
     "sort_by=vote_average.desc&without_genres=99,10755&vote_count.gte=200";
 
   const res = await fetch(
-    `${apiUrl}/movie/top_rate?${queries}&${additional}&api_key=${apiKey}`
+    `${apiUrl}/discover/movie?${queries}&${additional}&api_key=${apiKey}`
   );
   const { results: topRated }: { results: IDiscoverMovie[] } = await res.json();
 

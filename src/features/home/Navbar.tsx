@@ -10,7 +10,7 @@ import { Link } from "react-router";
 
 export default function Navbar() {
   return (
-    <div className="flex justify-center p-4">
+    <div className="absolute w-full top-0 flex justify-center p-4 z-50">
       <NavigationMenu>
         <NavigationMenuList>
           <NavigationMenuItem>
@@ -24,17 +24,15 @@ export default function Navbar() {
           <NavigationMenuItem>
             <NavigationMenuTrigger>Genres</NavigationMenuTrigger>
             <NavigationMenuContent>
-              <div className="min-w-60 min-h-60 bg-red-100 p-4">
-                Genres Content
-              </div>
+              <div className="min-w-60 min-h-60 p-4">Genres Content</div>
             </NavigationMenuContent>
           </NavigationMenuItem>
 
           <NavigationMenuItem>
             <NavigationMenuTrigger>Countries</NavigationMenuTrigger>
             <NavigationMenuContent>
-              <div className="min-w-80 min-h-60 bg-red-100 p-4">
-                Countries Content
+              <div className="min-w-80 min-h-60 p-4">
+                Countries Content lorem50
               </div>
             </NavigationMenuContent>
           </NavigationMenuItem>

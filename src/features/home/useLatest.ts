@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 
 function useLatest() {
   const { isLoading, data, error } = useQuery({
-    queryKey: ["latest-movies"],
+    queryKey: ["latestMovies"],
     queryFn: getLatestMovies,
   });
 
