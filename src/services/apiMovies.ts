@@ -13,8 +13,7 @@ export function withLatestQuery(query: string) {
   return query + `&primary_release_date.lte=${maximum}`;
 }
 
-const defaultQueries =
-  "include_adult=false&include_video=false&language=en-US&page=1";
+const defaultQueries = "include_adult=false&include_video=false&language=en-US";
 const queries = withLatestQuery(defaultQueries);
 
 export async function getMovies() {

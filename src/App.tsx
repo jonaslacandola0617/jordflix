@@ -1,7 +1,7 @@
 import { BrowserRouter, Routes, Route } from "react-router";
 
-import Home from "./pages/Home";
-import Movies from "./pages/Movies";
+import Home from "@/pages/Home";
+import Movies from "@/pages/Movies";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 const queryClient = new QueryClient();
