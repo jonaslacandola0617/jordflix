@@ -10,7 +10,7 @@ import { Link } from "react-router";
 
 export default function Navbar() {
   return (
-    <div className="absolute w-full top-0 flex justify-center p-4 z-50">
+    <div className="fixed w-full top-0 flex justify-center p-4 z-50">
       <NavigationMenu>
         <NavigationMenuList>
           <NavigationMenuItem>

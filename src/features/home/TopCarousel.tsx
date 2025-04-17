@@ -6,6 +6,7 @@ import {
   CarouselItem,
 } from "@/components/ui/carousel";
 import useTopRated from "@/features/home/useTopRated";
+import { ArrowBigUpDash } from "lucide-react";
 import { useNavigate } from "react-router";
 
 function TopCarousel() {
@@ -17,10 +18,10 @@ function TopCarousel() {
   }
 
   return (
-    <Carousel className="w-full">
+    <Carousel className="w-full" opts={{ loop: true }}>
       <CarouselContent>
         {topRated?.map((movie) => (
-          <CarouselItem>
+          <CarouselItem className="px-0">
             <AspectRatio ratio={16 / 6}>
               <div className="relative w-full h-full">
                 <img
@@ -28,7 +29,7 @@ function TopCarousel() {
                   alt={`${movie.title} - ${movie.overview}`}
                   className="absolute object-cover w-full h-full -z-10"
                 />
-                <div className="absolute w-full h-full bg-gradient-to-t from-slate-950 to-80%"></div>
+                <div className="absolute w-full h-full bg-gradient-to-t from-white dark:from-slate-950 to-80%"></div>
                 <div className="w-full h-full flex flex-row justify-center items-center p-8 gap-8 backdrop-blur-xs">
                   <div className="w-1/8">
                     <AspectRatio ratio={9 / 14} className="drop-shadow-lg">
@@ -39,14 +40,18 @@ function TopCarousel() {
                       />
                     </AspectRatio>
                   </div>
-                  <div className="w-1/4 flex flex-col gap-4">
-                    <p className="text-lg text-slate-50">{movie.title}</p>
-                    <p className="text-sm text-left text-slate-50">
-                      {movie.overview}
+                  <div className="w-1/4 flex flex-col gap-3">
+                    <p className="text-lg">{movie.title}</p>
+                    <p className="text-sm flex gap-0.5 items-center">
+                      <span>
+                        {Number(movie.vote_average).toPrecision(2)}/10
+                      </span>
+                      <ArrowBigUpDash />
                     </p>
+                    <p className="text-sm text-left mb-2">{movie.overview}</p>
                     <Button
                       onClick={() => watchNow(movie.id)}
-                      className="animate-pulse"
+                      className="animate-pulse hover:cursor-pointer"
                     >
                       Watch Now
                     </Button>
