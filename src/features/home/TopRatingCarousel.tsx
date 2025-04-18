@@ -26,10 +26,17 @@ function TopRatingCarousel() {
     );
 
   return (
-    <Carousel className="w-full" opts={{ loop: true }}>
+    <Carousel
+      autoplay
+      autoplayInterval={4000}
+      className="w-full"
+      opts={{
+        loop: true,
+      }}
+    >
       <CarouselContent>
         {topRated?.map((movie) => (
-          <CarouselItem key={movie.id} className="px-0">
+          <CarouselItem key={movie.id} className="basis-full px-0">
             <AspectRatio ratio={16 / 6}>
               <div className="relative w-full h-full">
                 <img
