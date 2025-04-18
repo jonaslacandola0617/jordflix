@@ -30,7 +30,7 @@ function DiscoverMovieCard({ movie }: DiscoverMovieCardProp) {
     <TooltipProvider>
       <Tooltip delayDuration={300}>
         <Card
-          className="min-h-96 p-0 gap-0 overflow-hidden hover:cursor-pointer"
+          className="w-full h-full max-w-56 p-0 gap-0 overflow-hidden hover:cursor-pointer"
           onClick={() => watch()}
         >
           <CardHeader className="p-0">
@@ -46,7 +46,7 @@ function DiscoverMovieCard({ movie }: DiscoverMovieCardProp) {
             <CardContent className="px-4 py-2">
               <p className="text-left text-sm line-clamp-1">{movie.title}</p>
             </CardContent>
-            <CardFooter className="flex items-center justify-between px-4">
+            <CardFooter className="flex items-center justify-between px-4 mb-4">
               <p className="flex items-center text-sm text-slate-600 dark:text-slate-400">
                 <span>{Number(movie.vote_average).toPrecision(2)}/10</span>
                 {movie.vote_average >= 5.5 ? (

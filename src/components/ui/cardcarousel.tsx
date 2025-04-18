@@ -15,13 +15,8 @@ interface ICardCarouselProps {
 function CardCarousel({ title, render }: ICardCarouselProps) {
   return (
     <>
-      <h1 className="text-xl p-4">{title}</h1>
-      <Carousel
-        autoplay
-        autoplayInterval={8000}
-        opts={{ loop: true, slidesToScroll: 2 }}
-        className="mb-4"
-      >
+      <h1 className="text-lg xl:text-xl p-4">{title}</h1>
+      <Carousel opts={{ loop: true, slidesToScroll: 2 }} className="lg:mb-4">
         <CarouselContent>{render}</CarouselContent>
         <CarouselPrevious size="lg" variant="default" />
         <CarouselNext size="lg" variant="default" />

@@ -28,7 +28,7 @@ function TopRatingCarousel() {
   return (
     <Carousel
       autoplay
-      autoplayInterval={4000}
+      autoplayInterval={6000}
       className="w-full"
       opts={{
         loop: true,

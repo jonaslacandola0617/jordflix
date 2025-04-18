@@ -30,7 +30,7 @@ export default function Movies() {
   }, [searchParams]);
 
   return (
-    <div className="h-full max-w-[75%] flex flex-col gap-8 mx-auto">
+    <div className="h-full max-w-[80%] flex flex-col gap-4 mx-auto xl:max-w-[75%]">
       <div className="flex items-center justify-between">
         <Breadcrumb>
           <BreadcrumbList>
@@ -52,7 +52,7 @@ export default function Movies() {
 
       <Paginate />
 
-      <div className="grid grid-cols-6 gap-4">
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4 mb-8">
         {movies?.map((movie) => (
           <DiscoverMovieCard key={movie.id} movie={movie} />
         ))}

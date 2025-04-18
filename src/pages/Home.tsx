@@ -7,7 +7,7 @@ function Home() {
   return (
     <>
       <TopRatingCarousel />
-      <div className="xl:m-auto xl:max-w-[75%] py-4">
+      <div className="max-w-[80%] m-auto py-4 xl:max-w-[75%]">
         <div className="w-1/2 m-auto flex items-center gap-4">
           <Searchbar />
         </div>
