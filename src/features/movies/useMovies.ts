@@ -4,15 +4,17 @@ import { useSearchParams } from "react-router";
 
 function useMovies() {
   const [searchParams] = useSearchParams();
+  const page = Number(searchParams.get("page"));
+  const sortBy = searchParams.get("sortBy");
 
   const { isLoading, data, error } = useQuery({
-    queryKey: ["movies"],
-    queryFn: () => getMovies(Number(searchParams.get("page")) || 1),
+    queryKey: ["movies", page, sortBy],
+    queryFn: () => getMovies(page || 1, sortBy || ""),
   });
 
   usePrefetchQuery({
-    queryKey: ["movies"],
-    queryFn: () => getMovies(Number(searchParams.get("page")) + 1),
+    queryKey: ["movies", page + 1, sortBy],
+    queryFn: () => getMovies(page + 1, sortBy || ""),
   });
 
   return { isLoading, data, error };

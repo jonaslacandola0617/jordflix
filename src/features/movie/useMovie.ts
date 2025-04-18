@@ -4,9 +4,11 @@ import { useParams } from "react-router";
 
 function useMovie() {
   const params = useParams();
+  const id = Number(params?.id);
+
   const { isLoading, data, error } = useQuery({
-    queryKey: [`movie-${params?.id}`],
-    queryFn: () => getMovie(Number(params?.id)),
+    queryKey: ["movie", id],
+    queryFn: () => getMovie(id),
   });
 
   return { isLoading, data, error };

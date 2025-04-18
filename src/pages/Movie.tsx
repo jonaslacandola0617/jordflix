@@ -5,23 +5,32 @@ import {
   BreadcrumbList,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
-import useMovie from "../features/movies/useMovie";
+import useMovie from "../features/movie/useMovie";
 import { Loader } from "lucide-react";
 import { useEffect } from "react";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Card, CardHeader } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import CardCarousel from "@/components/ui/cardcarousel";
+import useRecommendations from "@/features/movie/useRecommendations";
+import { CarouselItem } from "@/components/ui/carousel";
+import DiscoverMovieCard from "@/features/home/DiscoverMovieCard";
 
 function Movie() {
   const { isLoading, data: movie } = useMovie();
+  const { data: recommendations } = useRecommendations();
 
   useEffect(() => {
     document.title = `Jordflix / ${movie?.title || "Playing now..."}`;
   }, [movie?.title]);
 
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [movie]);
+
   return (
     <div className="relative w-full h-full">
-      <div className="max-w-[75%] flex flex-col gap-8 mt-18 mx-auto ">
+      <div className="max-w-[75%] flex flex-col gap-8 mt-18 mx-auto">
         <Breadcrumb>
           <BreadcrumbList>
             <BreadcrumbItem>
@@ -97,14 +106,27 @@ function Movie() {
           </div>
         </div>
 
-        <div className="absolute inset-0 -z-10 overflow-hidden">
-          <img
-            src={`https://image.tmdb.org/t/p/original/${movie?.backdrop_path}`}
-            alt=""
-            className="object-cover w-full h-full"
-          />
-          <div className="absolute inset-0 bg-gradient-to-b from-white to-white/70 dark:from-slate-950 dark:to-slate-950/70" />
+        <div className="absolute inset-0 -z-10">
+          <AspectRatio ratio={18 / 9}>
+            <img
+              src={`https://image.tmdb.org/t/p/original/${movie?.backdrop_path}`}
+              alt=""
+              className="object-cover w-full h-full"
+            />
+            <div className="absolute inset-0 bg-gradient-to-b from-white to-white/70 dark:from-slate-950 dark:to-slate-950/70" />
+          </AspectRatio>
         </div>
+      </div>
+
+      <div className="max-w-[75%] mx-auto ">
+        <CardCarousel
+          title="Recommendations"
+          render={recommendations?.map((movie) => (
+            <CarouselItem key={movie.id} className="basis-1/6">
+              <DiscoverMovieCard movie={movie} />
+            </CarouselItem>
+          ))}
+        />
       </div>
     </div>
   );

@@ -13,12 +13,13 @@ export function withLatestQuery(query: string) {
   return query + `&primary_release_date.lte=${maximum}`;
 }
 
-const defaultQueries = "include_adult=false&include_video=false&language=en-US";
+const defaultQueries =
+  "include_adult=false&include_video=false&language=en-US&vote_count.gte=100";
 const queries = withLatestQuery(defaultQueries);
 
-export async function getMovies(page = 1) {
+export async function getMovies(page = 1, sortBy = "") {
   const res = await fetch(
-    `${apiUrl}/discover/movie?${queries}&sort_by=popularity.desc&page=${page}&api_key=${apiKey}`
+    `${apiUrl}/discover/movie?${queries}&sort_by=${sortBy}&page=${page}&api_key=${apiKey}`
   );
   const { results: movies }: { results: IDiscoverMovie[] } = await res.json();
 
@@ -57,10 +58,20 @@ export async function getTopRatedMovies() {
 }
 
 export async function getTrendingMovies() {
-  const res = await fetch(`${apiUrl}/trending/movie/week?api_key=${apiKey}`);
+  const res = await fetch(`${apiUrl}/movie/popular?api_key=${apiKey}`);
   const { results: trending }: { results: IDiscoverMovie[] } = await res.json();
 
   return trending;
+}
+
+export async function getRecommendations(id: number) {
+  const res = await fetch(
+    `${apiUrl}/movie/${id}/recommendations?api_key=${apiKey}`
+  );
+  const { results: recommendations }: { results: IDiscoverMovie[] } =
+    await res.json();
+
+  return recommendations;
 }
 
 export async function getMovieGenres() {

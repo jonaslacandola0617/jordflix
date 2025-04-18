@@ -62,7 +62,7 @@ function DiscoverMovieCard({ movie }: DiscoverMovieCardProp) {
           <p className="text-xs text-center mb-4">{movie.overview}</p>
           <p className="text-xs text-center">
             Released on {new Date(movie.release_date).toDateString()}, gaining{" "}
-            {movie.vote_count} votes on TMDB
+            {Number(movie.popularity).toFixed()} views on TMDB
           </p>
         </TooltipContent>
       </Tooltip>
