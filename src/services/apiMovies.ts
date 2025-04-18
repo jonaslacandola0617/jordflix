@@ -1,4 +1,4 @@
-import { IGenre, IDiscoverMovie } from "@/lib/types";
+import { IGenre, IDiscoverMovie, IDetailMovie } from "@/lib/types";
 
 const apiKey = import.meta.env.VITE_API_KEY;
 const apiUrl = import.meta.env.VITE_API_URL;
@@ -28,7 +28,7 @@ export async function getMovies(page = 1) {
 export async function getMovie(id: number) {
   const res = await fetch(`${apiUrl}/movie/${id}?api_key=${apiKey}`);
 
-  const movie = await res.json();
+  const movie: IDetailMovie = await res.json();
 
   return movie;
 }

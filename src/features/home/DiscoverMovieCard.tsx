@@ -36,7 +36,7 @@ function DiscoverMovieCard({ movie }: DiscoverMovieCardProp) {
           <CardHeader className="p-0">
             <AspectRatio ratio={9 / 12}>
               <img
-                src={`https://image.tmdb.org/t/p/original/${movie.poster_path}`}
+                src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`}
                 alt=""
                 className="object-cover w-full h-full"
               />

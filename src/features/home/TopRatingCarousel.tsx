@@ -42,7 +42,7 @@ function TopRatingCarousel() {
                   <div className="w-1/8">
                     <AspectRatio ratio={9 / 14} className="drop-shadow-lg">
                       <img
-                        src={`https://image.tmdb.org/t/p/original/${movie.poster_path}`}
+                        src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`}
                         alt=""
                         className="absolute object-cover w-full h-full rounded-md"
                       />

@@ -1,7 +1,6 @@
 import {
   Pagination,
   PaginationContent,
-  PaginationEllipsis,
   PaginationItem,
   PaginationLink,
   PaginationNext,
@@ -45,10 +44,6 @@ export default function Paginate() {
             </PaginationLink>
           </PaginationItem>
         ))}
-
-        <PaginationItem>
-          <PaginationEllipsis />
-        </PaginationItem>
         <PaginationItem>
           <PaginationNext onClick={() => next()} />
         </PaginationItem>

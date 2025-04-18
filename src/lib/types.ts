@@ -1,12 +1,17 @@
 export interface IGenre {
-  name: string;
   id: number;
+  name: string;
+}
+
+interface IProductionCompany {
+  id: number;
+  logo_path: string;
+  name: string;
 }
 
 export interface IDiscoverMovie {
   adult: boolean;
   backdrop_path: string;
-  genre_ids: number[];
   id: number;
   original_language: string;
   original_title: string;
@@ -18,4 +23,9 @@ export interface IDiscoverMovie {
   video: boolean;
   vote_average: number;
   vote_count: number;
+}
+
+export interface IDetailMovie extends IDiscoverMovie {
+  genres: IGenre[];
+  production_companies: IProductionCompany[];
 }

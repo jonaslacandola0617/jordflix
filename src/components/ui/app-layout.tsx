@@ -3,7 +3,7 @@ import Navbar from "@/components/ui/navbar";
 
 function AppLayout() {
   return (
-    <div className="relative h-screen">
+    <div className="relative h-full">
       <Navbar />
       <div>
         <Outlet />

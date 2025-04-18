@@ -4,8 +4,8 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 import Home from "@/pages/Home";
 import Movies from "@/pages/Movies";
+import Movie from "@/pages/Movie";
 import AppLayout from "@/components/ui/app-layout";
-import WatchMovie from "./pages/WatchMovie";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -24,7 +24,7 @@ export default function App() {
           <Route element={<AppLayout />}>
             <Route path="/" element={<Home />} />
             <Route path="movies" element={<Movies />} />
-            <Route path="movies/watch/:id" element={<WatchMovie />} />
+            <Route path="movies/watch/:id" element={<Movie />} />
             <Route path="series" element />
           </Route>
         </Routes>
