@@ -8,8 +8,16 @@ import {
 } from "@/components/ui/navigation-menu";
 import { Link } from "react-router";
 import { Switch } from "./switch";
+import { useTheme } from "@/contexts/ThemeContext";
 
 export default function Navbar() {
+  const { theme, setTheme } = useTheme();
+
+  function toggleMode() {
+    if (theme === "dark") setTheme("light");
+    else setTheme("dark");
+  }
+
   return (
     <div className="fixed w-full top-0 flex justify-center p-4 z-50">
       <NavigationMenu>
@@ -51,7 +59,10 @@ export default function Navbar() {
           </NavigationMenuItem>
           <NavigationMenuItem>
             <div className="flex items-center gap-2">
-              <Switch />
+              <Switch
+                checked={theme === "dark" ? true : false}
+                onCheckedChange={() => toggleMode()}
+              />
             </div>
           </NavigationMenuItem>
         </NavigationMenuList>

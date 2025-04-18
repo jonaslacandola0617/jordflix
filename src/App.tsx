@@ -6,6 +6,7 @@ import Home from "@/pages/Home";
 import Movies from "@/pages/Movies";
 import Movie from "@/pages/Movie";
 import AppLayout from "@/components/ui/app-layout";
+import { ThemeProvider } from "@/contexts/ThemeContext";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -17,18 +18,20 @@ const queryClient = new QueryClient({
 
 export default function App() {
   return (
-    <QueryClientProvider client={queryClient}>
-      <ReactQueryDevtools />
-      <BrowserRouter>
-        <Routes>
-          <Route element={<AppLayout />}>
-            <Route path="/" element={<Home />} />
-            <Route path="movies" element={<Movies />} />
-            <Route path="movies/watch/:id" element={<Movie />} />
-            <Route path="series" element />
-          </Route>
-        </Routes>
-      </BrowserRouter>
-    </QueryClientProvider>
+    <ThemeProvider defaultTheme="dark">
+      <QueryClientProvider client={queryClient}>
+        <ReactQueryDevtools />
+        <BrowserRouter>
+          <Routes>
+            <Route element={<AppLayout />}>
+              <Route path="/" element={<Home />} />
+              <Route path="movies" element={<Movies />} />
+              <Route path="movies/watch/:id" element={<Movie />} />
+              <Route path="series" element />
+            </Route>
+          </Routes>
+        </BrowserRouter>
+      </QueryClientProvider>
+    </ThemeProvider>
   );
 }
