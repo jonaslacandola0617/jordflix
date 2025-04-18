@@ -30,7 +30,7 @@ export default function Movies() {
   }, [searchParams]);
 
   return (
-    <div className="h-full max-w-[75%] flex flex-col gap-8 py-20 mx-auto">
+    <div className="h-full max-w-[75%] flex flex-col gap-8 mx-auto">
       <div className="flex items-center justify-between">
         <Breadcrumb>
           <BreadcrumbList>

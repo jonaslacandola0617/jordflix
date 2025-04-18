@@ -74,6 +74,16 @@ export async function getRecommendations(id: number) {
   return recommendations;
 }
 
+export async function findMovie(query: string, page = 1) {
+  const res = await fetch(
+    `${apiUrl}/search/movie?${defaultQueries}&query=${query}&page=${page}&api_key=${apiKey}`
+  );
+
+  const { results }: { results: IDiscoverMovie[] } = await res.json();
+
+  return results;
+}
+
 export async function getMovieGenres() {
   const res = await fetch(`${apiUrl}/genre/movie/list?api_key=${apiKey}`);
   const { genres }: { genres: IGenre } = await res.json();

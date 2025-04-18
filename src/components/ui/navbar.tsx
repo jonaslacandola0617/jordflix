@@ -19,7 +19,7 @@ export default function Navbar() {
   }
 
   return (
-    <div className="fixed w-full top-0 flex justify-center p-4 z-50">
+    <div className="sticky w-full mx-auto top-0 flex justify-center p-4 z-50 ">
       <NavigationMenu>
         <NavigationMenuList>
           <NavigationMenuItem>

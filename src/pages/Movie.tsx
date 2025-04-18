@@ -30,7 +30,7 @@ function Movie() {
 
   return (
     <div className="relative w-full h-full">
-      <div className="max-w-[75%] flex flex-col gap-8 mt-18 mx-auto">
+      <div className="max-w-[75%] flex flex-col gap-8 mx-auto">
         <Breadcrumb>
           <BreadcrumbList>
             <BreadcrumbItem>
