@@ -46,7 +46,7 @@ function Sort() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger>
-        <Button variant="outline">
+        <Button variant="outline" size="sm">
           <span>Sort by</span>
           <ArrowUpDown size={16} />
         </Button>
