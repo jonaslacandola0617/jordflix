@@ -1,6 +1,6 @@
-# Jordflix 🎬
+<h1 align="center">Jordflix</h1>
 
-Jordflix is a sleek, modern movie browsing app inspired by Netflix. Built with love, this project lets users explore trending films, search for their favorite titles, and enjoy a stunning cinematic UI. Whether you're a film buff or just looking for something to watch, Jordflix gives you that movie night vibe, anytime, anywhere.
+<p align="center">Jordflix is a sleek, modern movie browsing app inspired by Netflix. Built with love, this project lets users explore trending films, search for their favorite titles, and enjoy a stunning cinematic UI. Whether you're a film buff or just looking for something to watch, Jordflix gives you that movie night vibe, anytime, anywhere.</p>
 
 <img src="./public/screenshot.png">
 
