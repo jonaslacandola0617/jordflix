@@ -84,9 +84,27 @@ export async function findMovie(query: string, page = 1) {
   return results;
 }
 
+export async function getMoviesByGenre(page = 1, sortBy = "", genreId: number) {
+  const res = await fetch(
+    `${apiUrl}/discover/movie?${queries}&sort_by=${sortBy}&page=${page}&with_genres=${genreId}&api_key=${apiKey}`
+  );
+  const { results: movies }: { results: IDiscoverMovie[] } = await res.json();
+
+  return movies;
+}
+
+export async function getMoviesByCountry(page = 1, sortBy = "", country = "") {
+  const res = await fetch(
+    `${apiUrl}/discover/movie?${queries}&sort_by=${sortBy}&page=${page}&with_origin_country=${country}&api_key=${apiKey}`
+  );
+  const { results: movies }: { results: IDiscoverMovie[] } = await res.json();
+
+  return movies;
+}
+
 export async function getMovieGenres() {
   const res = await fetch(`${apiUrl}/genre/movie/list?api_key=${apiKey}`);
-  const { genres }: { genres: IGenre } = await res.json();
+  const { genres }: { genres: IGenre[] } = await res.json();
 
   return genres;
 }

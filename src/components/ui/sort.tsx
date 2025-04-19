@@ -5,7 +5,6 @@ import {
   ArrowUpAZ,
   ArrowUpDown,
 } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuTrigger,
@@ -45,11 +44,9 @@ function Sort() {
 
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger>
-        <Button variant="outline" size="sm">
-          <span>Sort by</span>
-          <ArrowUpDown size={16} />
-        </Button>
+      <DropdownMenuTrigger className="flex items-center gap-2 h-9 px-4 py-2 has-[>svg]:px-3 rounded-md text-sm font-medium  border bg-background shadow-xs hover:bg-accent hover:text-accent-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50">
+        <span>Sort by</span>
+        <ArrowUpDown size={16} />
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56">
         <DropdownMenuItem onClick={sortByTitle}>
