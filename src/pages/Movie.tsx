@@ -56,6 +56,7 @@ function Movie() {
           <iframe
             src={`https://vidsrc.me/embed/movie?tmdb=${movie?.id}`}
             className="object-contain w-full h-full rounded-2xl"
+            allowFullScreen={true}
           ></iframe>
         </AspectRatio>
       </div>
