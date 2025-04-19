@@ -8,6 +8,7 @@ import Movie from "@/pages/Movie";
 import AppLayout from "@/components/ui/app-layout";
 import { ThemeProvider } from "@/contexts/ThemeContext";
 import Search from "@/pages/Search";
+import TvSeries from "@/pages/TvSeries";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -28,7 +29,7 @@ export default function App() {
               <Route path="/" element={<Home />} />
               <Route path="movies" element={<Movies />} />
               <Route path="movies/watch/:id" element={<Movie />} />
-              <Route path="series" element />
+              <Route path="series" element={<TvSeries />} />
               <Route path="search" element={<Search />} />
             </Route>
           </Routes>

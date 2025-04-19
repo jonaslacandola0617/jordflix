@@ -54,7 +54,7 @@ export default function Navbar() {
 
           <NavigationMenuItem>
             <NavigationMenuLink asChild>
-              <Link to="/tv-series">TV Series</Link>
+              <Link to="/series">TV Series</Link>
             </NavigationMenuLink>
           </NavigationMenuItem>
           <NavigationMenuItem>

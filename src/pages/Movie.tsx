@@ -9,7 +9,6 @@ import useMovie from "../features/movie/useMovie";
 import { Loader } from "lucide-react";
 import { useEffect } from "react";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
-import { Card, CardHeader } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import CardCarousel from "@/components/ui/cardcarousel";
 import useRecommendations from "@/features/movie/useRecommendations";
@@ -63,17 +62,15 @@ function Movie() {
 
       <div className="relative w-full py-18">
         <div className="max-w-[80%] lg:max-w-[75%] flex items-center justify-center gap-8 m-auto z-10 relative">
-          <Card className="lg:h-80 lg:w-60 p-0 gap-0 overflow-hidden hidden lg:block">
-            <CardHeader className="p-0">
-              <AspectRatio ratio={9 / 12}>
-                <img
-                  src={`https://image.tmdb.org/t/p/w500/${movie?.poster_path}`}
-                  alt=""
-                  className="object-cover object-top w-full h-full"
-                />
-              </AspectRatio>
-            </CardHeader>
-          </Card>
+          <div className="md:w-1/4 xl:w-1/7">
+            <AspectRatio ratio={9 / 14}>
+              <img
+                src={`https://image.tmdb.org/t/p/w500/${movie?.poster_path}`}
+                alt=""
+                className="object-cover w-full h-full rounded-md"
+              />
+            </AspectRatio>
+          </div>
           <div className="w-full lg:w-1/2 flex flex-col gap-4">
             <p className="text-left text-lg lg:text-2xl font-bold">
               {movie?.title}
