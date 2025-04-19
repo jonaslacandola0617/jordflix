@@ -47,7 +47,8 @@ Live Demo 👉 [jordflix.vercel.app](https://jordflix.vercel.app/)
    Create a `.env.local` file in the root of the project and add your TMDB API key:
 
    ```env
-   NEXT_PUBLIC_TMDB_API_KEY=your_tmdb_api_key_here
+   API_KEY=your_tmdb_api_key_here
+   API_URL=your_vidsrc_url_here
    ```
 
 4. **Run the Development Server**
