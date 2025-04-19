@@ -50,7 +50,7 @@ function Search() {
               <DiscoverMovieCard key={movie.id} movie={movie} />
             ))
           : !isLoading && (
-              <p className="p-4 text-slate-400 dark:text-slate-600">
+              <p className="p-4 text-sm text-slate-400 dark:text-slate-600">
                 That series or movie isn’t here—maybe try another name?
               </p>
             )}
