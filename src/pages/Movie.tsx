@@ -54,7 +54,7 @@ function Movie() {
         </Breadcrumb>
         <AspectRatio ratio={16 / 9} className="w-full">
           <iframe
-            src={`https://vidsrc.me/embed/movie?tmdb=${movie?.id}`}
+            src={`https://vidsrc.to/embed/movie/${movie?.id}`}
             className="object-contain w-full h-full rounded-2xl"
             allowFullScreen={true}
           ></iframe>
