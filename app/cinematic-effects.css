@@ -9,42 +9,39 @@
 .hero::after,.detail-hero::after{content:"";position:absolute;inset:-18%;z-index:1;pointer-events:none;background:linear-gradient(112deg,transparent 36%,rgba(255,81,40,0) 51%,rgba(255,91,47,.10) 57%,rgba(255,239,211,.30) 62%,rgba(255,132,72,.16) 67%,rgba(255,62,37,.06) 70%,transparent 77%);mix-blend-mode:screen;filter:blur(15px);opacity:.62;transform:translate3d(-12%,1%,0) rotate(-2deg);animation:jordflixGlareSweep 15s cubic-bezier(.55,.02,.35,1) infinite;will-change:transform,opacity}
 .detail-hero::after{opacity:.48;animation-delay:-5s;animation-duration:18s}
 
-/* Catalog pages did not previously have a burn layer. Give Movies / Series a dedicated editorial light leak. */
+/* Catalog pages: dedicated editorial light leak. */
 .page-hero{position:relative;isolation:isolate;overflow:visible}
 .page-hero::before{content:"";position:absolute;z-index:0;pointer-events:none;width:min(78vw,980px);height:430px;left:42%;top:70px;border-radius:50%;background:radial-gradient(ellipse at 34% 48%,rgba(255,248,226,.30) 0 3%,rgba(255,133,73,.24) 13%,rgba(255,78,43,.16) 31%,rgba(255,45,30,.07) 47%,transparent 70%);mix-blend-mode:screen;filter:blur(10px);opacity:.82;transform:rotate(-7deg);animation:jordflixCatalogBurn 12s ease-in-out infinite alternate;will-change:transform,opacity}
 .page-hero::after{content:"";position:absolute;z-index:1;pointer-events:none;width:78vw;height:340px;left:26%;top:104px;background:linear-gradient(108deg,transparent 36%,rgba(255,88,44,.06) 50%,rgba(255,237,206,.23) 57%,rgba(255,116,61,.13) 63%,transparent 72%);mix-blend-mode:screen;filter:blur(17px);opacity:.58;transform:translate3d(-9%,0,0) rotate(-3deg);animation:jordflixCatalogGlare 14s cubic-bezier(.45,.02,.3,1) infinite;will-change:transform,opacity}
 
-/* Burned-film display type: hot exposed center, orange edge, and red emulsion bloom. */
+/* Localized burned-film display type.
+   Keep the original Jordflix ivory as the dominant color, then let only a few
+   small orange/red heat patches bleed through the letterforms. */
 .hero h1,.page-title,.detail-copy h1{
-  color:#ffe8a8;
+  color:#f5f3ed;
   -webkit-text-fill-color:transparent;
   -webkit-background-clip:text;
   background-clip:text;
-  background-image:linear-gradient(108deg,#fff6d9 0%,#ffd565 18%,#ff9b38 36%,#fff4c7 49%,#ffbd45 61%,#ff7a32 78%,#ffe4a0 100%);
-  background-size:220% 100%;
-  background-position:8% 50%;
-  -webkit-text-stroke:.35px rgba(255,168,71,.72);
-  text-shadow:
-    0 0 1px rgba(255,248,218,.92),
-    0 0 4px rgba(255,214,95,.84),
-    0 0 9px rgba(255,136,51,.72),
-    0 0 18px rgba(255,76,33,.55),
-    0 0 34px rgba(181,35,21,.34),
-    0 5px 36px rgba(90,12,7,.28);
-  filter:saturate(1.08) contrast(1.03);
-  animation:jordflixTitleBurn 10.5s ease-in-out infinite alternate;
-  will-change:background-position,filter,text-shadow;
+  background-image:
+    radial-gradient(circle at 18% 58%,rgba(255,238,197,.98) 0 2.5%,rgba(255,150,77,.92) 4%,rgba(255,82,43,.78) 6.5%,rgba(213,44,27,.45) 8.5%,transparent 12.5%),
+    radial-gradient(circle at 68% 28%,rgba(255,232,191,.94) 0 2%,rgba(255,137,69,.84) 3.8%,rgba(255,78,40,.66) 6%,rgba(200,40,25,.34) 8%,transparent 11.5%),
+    radial-gradient(circle at 91% 72%,rgba(255,223,176,.86) 0 1.7%,rgba(255,124,61,.72) 3.3%,rgba(255,69,35,.52) 5.3%,transparent 9.5%),
+    linear-gradient(#f5f3ed,#f5f3ed);
+  background-size:100% 100%,100% 100%,100% 100%,100% 100%;
+  background-position:center;
+  background-repeat:no-repeat;
+  -webkit-text-stroke:0;
+  text-shadow:none;
+  filter:none;
+  animation:jordflixTitleHeat 13s ease-in-out infinite alternate;
 }
 
-/* Detail titles sit on photographic art, so keep their outer bloom a touch tighter. */
+/* Detail titles get even fewer/softer heat marks over photographic backdrops. */
 .detail-copy h1{
-  text-shadow:
-    0 0 1px rgba(255,248,218,.92),
-    0 0 4px rgba(255,210,90,.78),
-    0 0 8px rgba(255,128,46,.62),
-    0 0 15px rgba(255,69,30,.45),
-    0 0 27px rgba(150,28,18,.26),
-    0 5px 30px rgba(30,4,3,.32);
+  background-image:
+    radial-gradient(circle at 22% 62%,rgba(255,234,194,.92) 0 2%,rgba(255,137,69,.78) 3.5%,rgba(255,76,40,.56) 5.5%,transparent 10%),
+    radial-gradient(circle at 76% 31%,rgba(255,224,181,.82) 0 1.7%,rgba(255,124,61,.64) 3.2%,rgba(255,68,35,.42) 5.2%,transparent 9%),
+    linear-gradient(#f5f3ed,#f5f3ed);
 }
 
 /* Playback gets only a restrained optical reflection so controls remain readable. */
@@ -56,12 +53,11 @@
 .card-overlay{z-index:3}
 .media-card:hover .poster-wrap::after{opacity:.70;transform:translate3d(0,0,0) scale(1)}
 
-@keyframes jordflixTitleBurn{
-  0%{background-position:0% 50%;filter:saturate(1.02) contrast(1.02);text-shadow:0 0 1px rgba(255,248,218,.92),0 0 4px rgba(255,214,95,.78),0 0 8px rgba(255,136,51,.60),0 0 16px rgba(255,76,33,.42),0 0 29px rgba(181,35,21,.27),0 5px 32px rgba(90,12,7,.24)}
-  31%{filter:saturate(1.15) contrast(1.04)}
-  48%{background-position:53% 50%;text-shadow:0 0 1px rgba(255,251,227,1),0 0 5px rgba(255,223,111,.92),0 0 11px rgba(255,147,55,.78),0 0 22px rgba(255,72,31,.61),0 0 41px rgba(190,34,20,.39),0 6px 40px rgba(90,12,7,.29)}
-  73%{filter:saturate(1.09) contrast(1.05)}
-  100%{background-position:100% 50%;filter:saturate(1.13) contrast(1.03);text-shadow:0 0 1px rgba(255,248,218,.96),0 0 4px rgba(255,217,92,.84),0 0 9px rgba(255,125,44,.68),0 0 19px rgba(255,64,27,.52),0 0 35px rgba(168,28,17,.32),0 5px 35px rgba(78,10,6,.26)}
+/* Very small drift: the title remains ivory; only the heat patches breathe slightly. */
+@keyframes jordflixTitleHeat{
+  0%{background-size:100% 100%,100% 100%,100% 100%,100% 100%;opacity:1}
+  48%{background-size:104% 104%,97% 97%,102% 102%,100% 100%;opacity:.995}
+  100%{background-size:98% 98%,103% 103%,96% 96%,100% 100%;opacity:1}
 }
 
 @keyframes jordflixBurnDrift{0%{transform:translate3d(1vw,-1vh,0) rotate(-10deg) scale(.98);opacity:.67}38%{opacity:.96}100%{transform:translate3d(-6vw,5vh,0) rotate(-4deg) scale(1.14);opacity:.76}}
@@ -75,7 +71,7 @@
   .hero::after,.detail-hero::after{opacity:.36;filter:blur(12px)}
   .page-hero::before{width:110vw;height:300px;left:32%;top:58px;opacity:.60}
   .page-hero::after{width:110vw;height:260px;left:15%;top:76px;opacity:.38;filter:blur(13px)}
-  .hero h1,.page-title,.detail-copy h1{-webkit-text-stroke:.25px rgba(255,168,71,.62);text-shadow:0 0 1px rgba(255,248,218,.9),0 0 4px rgba(255,206,84,.72),0 0 8px rgba(255,121,43,.58),0 0 16px rgba(255,65,28,.43),0 0 27px rgba(161,26,16,.25)}
+  .hero h1,.page-title,.detail-copy h1{background-image:radial-gradient(circle at 22% 58%,rgba(255,232,190,.90) 0 2%,rgba(255,133,67,.75) 3.5%,rgba(255,76,39,.55) 5.5%,transparent 10%),radial-gradient(circle at 78% 30%,rgba(255,222,178,.80) 0 1.5%,rgba(255,117,57,.62) 3%,rgba(255,65,34,.40) 5%,transparent 9%),linear-gradient(#f5f3ed,#f5f3ed)}
   .player-shell::after{opacity:.52}
   .media-card:hover .poster-wrap::after{opacity:.42}
 }
@@ -84,5 +80,4 @@
   .hero::before,.detail-hero::before,.hero::after,.detail-hero::after,.page-hero::before,.page-hero::after,.hero h1,.page-title,.detail-copy h1{animation:none}
   .hero::before{opacity:.66}.detail-hero::before{opacity:.52}.hero::after,.detail-hero::after{opacity:.30}
   .page-hero::before{opacity:.58}.page-hero::after{opacity:.30}
-  .hero h1,.page-title,.detail-copy h1{background-position:48% 50%;filter:none}
 }
