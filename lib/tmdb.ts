@@ -5,6 +5,9 @@ const token = process.env.TMDB_API_TOKEN;
 const apiKey = process.env.TMDB_API_KEY;
 export const defaultRegion = process.env.DEFAULT_REGION || "PH";
 
+export type TmdbGenre = { id: number; name: string };
+export type TmdbCountry = { iso_3166_1: string; english_name: string; native_name?: string };
+
 function authHeaders(): HeadersInit {
   return token ? { Authorization: `Bearer ${token}`, Accept: "application/json" } : { Accept: "application/json" };
 }
@@ -32,6 +35,18 @@ const watchable = {
 export async function discover(type: MediaType, page = 1, sortBy = "popularity.desc", extra: Record<string, string | number | boolean | undefined> = {}) {
   const data = await tmdb<{ results: MediaItem[]; total_pages: number }>(`/discover/${type}`, { ...watchable, sort_by: sortBy, page, ...extra });
   return data;
+}
+
+export async function genres(type: MediaType) {
+  const data = await tmdb<{ genres: TmdbGenre[] }>(`/genre/${type}/list`, { language: "en-US" }, 86400);
+  return data.genres;
+}
+
+export async function countries() {
+  const data = await tmdb<TmdbCountry[]>("/configuration/countries", { language: "en-US" }, 86400);
+  return data
+    .filter(country => country.iso_3166_1 && country.english_name)
+    .sort((a, b) => a.english_name.localeCompare(b.english_name));
 }
 
 export async function trending(type: MediaType = "movie") {
