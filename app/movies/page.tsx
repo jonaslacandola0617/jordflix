@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import BurnTitle from "@/components/BurnTitle";
 import CatalogFilters from "@/components/CatalogFilters";
 import CompactPagination from "@/components/CompactPagination";
 import MediaCard from "@/components/MediaCard";
@@ -63,7 +62,7 @@ export default async function MoviesPage({ searchParams }: { searchParams: Promi
     <div className="page-shell">
       <header className="page-hero">
         <span className="eyebrow">Cinema · available in your region</span>
-        <h1 className="page-title burn-title"><BurnTitle text="Movies" /></h1>
+        <h1 className="page-title">Movies</h1>
         <p className="page-intro">Browse films with a current online provider listing instead of digging through an endless catalog of titles you cannot actually find.</p>
       </header>
 
