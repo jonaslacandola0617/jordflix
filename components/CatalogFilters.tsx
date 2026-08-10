@@ -16,6 +16,10 @@ export default function CatalogFilters({ basePath, sort, genre = "", country = "
   return (
     <form className="catalog-filter-form" action={basePath} method="get">
       <input type="hidden" name="sort" value={sort} />
+      <div className="catalog-filter-intro" aria-hidden="true">
+        <span className="catalog-filter-dot" />
+        <span>Refine</span>
+      </div>
       <label className="catalog-select">
         <span>Genre</span>
         <select name="genre" defaultValue={genre} aria-label="Filter by genre">
@@ -30,8 +34,8 @@ export default function CatalogFilters({ basePath, sort, genre = "", country = "
           {countries.map(item => <option key={item.iso_3166_1} value={item.iso_3166_1}>{item.english_name}</option>)}
         </select>
       </label>
-      <button className="catalog-apply" type="submit">Apply</button>
-      {hasFilters && <Link className="catalog-clear" href={{ pathname: basePath, query: { sort } }}>Clear</Link>}
+      <button className="catalog-apply" type="submit">Apply filters</button>
+      {hasFilters && <Link className="catalog-clear" href={{ pathname: basePath, query: { sort } }}>Reset</Link>}
     </form>
   );
 }
