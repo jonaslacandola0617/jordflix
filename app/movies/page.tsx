@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import CatalogFilters from "@/components/CatalogFilters";
+import CompactPagination from "@/components/CompactPagination";
 import MediaCard from "@/components/MediaCard";
 import Pagination from "@/components/Pagination";
-import { discover } from "@/lib/tmdb";
+import { countries, discover, genres } from "@/lib/tmdb";
 
 export const metadata: Metadata = {
   title: "Movies",
@@ -17,17 +19,45 @@ const sorts = {
 
 type SortKey = keyof typeof sorts;
 
+type Query = { page?: string; sort?: string; genre?: string; country?: string };
+
 function pageNumber(value?: string) {
   const parsed = Number.parseInt(value || "1", 10);
   return Number.isFinite(parsed) ? Math.min(500, Math.max(1, parsed)) : 1;
 }
 
-export default async function MoviesPage({ searchParams }: { searchParams: Promise<{ page?: string; sort?: string }> }) {
+function genreId(value?: string) {
+  return value && /^\d+$/.test(value) ? value : "";
+}
+
+function countryCode(value?: string) {
+  return value && /^[A-Za-z]{2}$/.test(value) ? value.toUpperCase() : "";
+}
+
+export default async function MoviesPage({ searchParams }: { searchParams: Promise<Query> }) {
   const params = await searchParams;
   const page = pageNumber(params.page);
   const activeSort: SortKey = params.sort && params.sort in sorts ? params.sort as SortKey : "popular";
+  const activeGenre = genreId(params.genre);
+  const activeCountry = countryCode(params.country);
   const config = sorts[activeSort];
-  const data = await discover("movie", page, config.sort, config.extra);
+  const filterExtra = {
+    ...config.extra,
+    with_genres: activeGenre || undefined,
+    with_origin_country: activeCountry || undefined,
+  };
+
+  const [data, genreOptions, countryOptions] = await Promise.all([
+    discover("movie", page, config.sort, filterExtra),
+    genres("movie"),
+    countries(),
+  ]);
+
+  const persistentQuery = {
+    sort: activeSort,
+    genre: activeGenre || undefined,
+    country: activeCountry || undefined,
+  };
 
   return (
     <div className="page-shell">
@@ -36,14 +66,28 @@ export default async function MoviesPage({ searchParams }: { searchParams: Promi
         <h1 className="page-title">Movies</h1>
         <p className="page-intro">Browse films with a current online provider listing instead of digging through an endless catalog of titles you cannot actually find.</p>
       </header>
-      <nav className="filter-pills" aria-label="Sort movies">
-        {Object.entries(sorts).map(([key, value]) => (
-          <Link key={key} className={`pill ${activeSort === key ? "active" : ""}`} href={{ pathname: "/movies", query: { sort: key } }}>{value.label}</Link>
-        ))}
-        <span className="pill informational">Streaming · free · ad-supported</span>
-      </nav>
-      {data.results.length ? <section className="catalog">{data.results.map(item => <MediaCard key={item.id} item={item} type="movie" />)}</section> : <p className="empty">No movies were returned for this page.</p>}
-      <Pagination page={page} totalPages={data.total_pages} basePath="/movies" query={{ sort: activeSort }} />
+
+      <div className="catalog-toolbar">
+        <div className="catalog-toolbar-main">
+          <nav className="filter-pills" aria-label="Sort movies">
+            {Object.entries(sorts).map(([key, value]) => (
+              <Link
+                key={key}
+                className={`pill ${activeSort === key ? "active" : ""}`}
+                href={{ pathname: "/movies", query: { sort: key, genre: activeGenre || undefined, country: activeCountry || undefined } }}
+              >
+                {value.label}
+              </Link>
+            ))}
+            <span className="pill informational">Streaming · free · ad-supported</span>
+          </nav>
+          <CatalogFilters basePath="/movies" sort={activeSort} genre={activeGenre} country={activeCountry} genres={genreOptions} countries={countryOptions} />
+        </div>
+        <CompactPagination page={page} totalPages={data.total_pages} basePath="/movies" query={persistentQuery} />
+      </div>
+
+      {data.results.length ? <section className="catalog">{data.results.map(item => <MediaCard key={item.id} item={item} type="movie" />)}</section> : <p className="empty">No movies match these filters.</p>}
+      <Pagination page={page} totalPages={data.total_pages} basePath="/movies" query={persistentQuery} />
     </div>
   );
 }
