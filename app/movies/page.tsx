@@ -18,7 +18,6 @@ const sorts = {
 } as const;
 
 type SortKey = keyof typeof sorts;
-
 type Query = { page?: string; sort?: string; genre?: string; country?: string };
 
 function pageNumber(value?: string) {
@@ -67,23 +66,24 @@ export default async function MoviesPage({ searchParams }: { searchParams: Promi
         <p className="page-intro">Browse films with a current online provider listing instead of digging through an endless catalog of titles you cannot actually find.</p>
       </header>
 
-      <div className="catalog-toolbar">
-        <div className="catalog-toolbar-main">
-          <nav className="filter-pills" aria-label="Sort movies">
-            {Object.entries(sorts).map(([key, value]) => (
-              <Link
-                key={key}
-                className={`pill ${activeSort === key ? "active" : ""}`}
-                href={{ pathname: "/movies", query: { sort: key, genre: activeGenre || undefined, country: activeCountry || undefined } }}
-              >
-                {value.label}
-              </Link>
-            ))}
-            <span className="pill informational">Streaming · free · ad-supported</span>
-          </nav>
+      <div className="catalog-controls">
+        <nav className="filter-pills catalog-sort-row" aria-label="Sort movies">
+          {Object.entries(sorts).map(([key, value]) => (
+            <Link
+              key={key}
+              className={`pill ${activeSort === key ? "active" : ""}`}
+              href={{ pathname: "/movies", query: { sort: key, genre: activeGenre || undefined, country: activeCountry || undefined } }}
+            >
+              {value.label}
+            </Link>
+          ))}
+          <span className="pill informational">Streaming · free · ad-supported</span>
+        </nav>
+
+        <div className="catalog-discovery-strip">
           <CatalogFilters basePath="/movies" sort={activeSort} genre={activeGenre} country={activeCountry} genres={genreOptions} countries={countryOptions} />
+          <CompactPagination page={page} totalPages={data.total_pages} basePath="/movies" query={persistentQuery} />
         </div>
-        <CompactPagination page={page} totalPages={data.total_pages} basePath="/movies" query={persistentQuery} />
       </div>
 
       {data.results.length ? <section className="catalog">{data.results.map(item => <MediaCard key={item.id} item={item} type="movie" />)}</section> : <p className="empty">No movies match these filters.</p>}
