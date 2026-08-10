@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Manrope, Playfair_Display } from "next/font/google";
 import "./globals.css";
 import "./polish.css";
+import "./readability.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 
