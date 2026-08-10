@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import BackButton from "@/components/BackButton";
-import BurnTitle from "@/components/BurnTitle";
 import EpisodePicker from "@/components/EpisodePicker";
 import MediaRow from "@/components/MediaRow";
 import PlaybackPlayer from "@/components/PlaybackPlayer";
@@ -91,7 +90,7 @@ export default async function TitlePage({ params, searchParams }: { params: Prom
       <div className="detail-scrim"/>
       <div className="detail-copy">
         <span className="eyebrow">{type === "movie" ? "Film" : "Series"} · {yearOf(item)}</span>
-        <h1 className="burn-title"><BurnTitle text={title} /></h1>
+        <h1>{title}</h1>
         <div className="hero-meta"><span>★ {item.vote_average.toFixed(1)}</span>{item.genres?.slice(0, 3).map(g => <span key={g.id}>{g.name}</span>)}</div>
         {facts.length > 0 && <div className="detail-facts">{facts.map(fact => <span key={fact}>{fact}</span>)}</div>}
         <p>{item.overview}</p>
