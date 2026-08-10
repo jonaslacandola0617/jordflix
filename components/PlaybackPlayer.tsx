@@ -2,13 +2,15 @@ import Image from "next/image";
 
 type Props = {
   title: string;
-  source: string | null;
+  embedUrl?: string | null;
+  source?: string | null;
   trailerKey?: string;
   poster?: string | null;
 };
 
-export default function PlaybackPlayer({ title, source, trailerKey, poster }: Props) {
+export default function PlaybackPlayer({ title, embedUrl, source, trailerKey, poster }: Props) {
   const isHls = source ? /\.m3u8(?:$|\?)/i.test(source) : false;
+  const hasPlayback = Boolean(embedUrl || source);
 
   return (
     <section className="playback-section" id="watch" aria-labelledby="watch-heading">
@@ -17,13 +19,22 @@ export default function PlaybackPlayer({ title, source, trailerKey, poster }: Pr
           <span className="eyebrow">Jordflix player</span>
           <h2 className="subhead" id="watch-heading">Watch {title}</h2>
         </div>
-        <span className={`playback-status ${source ? "ready" : "trailer-only"}`}>
-          {source ? "Playback source ready" : trailerKey ? "Trailer mode" : "No source configured"}
+        <span className={`playback-status ${hasPlayback ? "ready" : "trailer-only"}`}>
+          {embedUrl ? "Embed source ready" : source ? "Media source ready" : trailerKey ? "Trailer mode" : "No source configured"}
         </span>
       </div>
 
       <div className="player-shell">
-        {source ? (
+        {embedUrl ? (
+          <iframe
+            className="video-player embed-player"
+            src={embedUrl}
+            title={`${title} Jordflix player`}
+            allow="autoplay; encrypted-media; picture-in-picture; fullscreen"
+            allowFullScreen
+            referrerPolicy="strict-origin-when-cross-origin"
+          />
+        ) : source ? (
           <video
             className="video-player"
             controls
@@ -49,23 +60,29 @@ export default function PlaybackPlayer({ title, source, trailerKey, poster }: Pr
             <div className="player-placeholder-scrim" />
             <div className="player-placeholder-copy">
               <strong>Player ready for your media.</strong>
-              <span>Configure an authorized MP4 or browser-compatible HLS source to start playback here.</span>
+              <span>Configure your self-hosted embed URL or an MP4/HLS source to start playback here.</span>
             </div>
           </div>
         ) : (
           <div className="player-placeholder plain">
             <div className="player-placeholder-copy">
               <strong>Player ready for your media.</strong>
-              <span>Configure an authorized playback source for this title.</span>
+              <span>Configure a playback source for this title.</span>
             </div>
           </div>
         )}
       </div>
 
-      {source && isHls && (
+      {embedUrl && (
+        <div className="player-note-row">
+          <p className="player-note">Using your configured self-hosted embed route.</p>
+          <a className="player-open-link" href={embedUrl} target="_blank" rel="noreferrer">Open player ↗</a>
+        </div>
+      )}
+      {!embedUrl && source && isHls && (
         <p className="player-note">HLS playback depends on browser support. MP4 works most consistently across desktop and mobile browsers.</p>
       )}
-      {!source && trailerKey && (
+      {!hasPlayback && trailerKey && (
         <p className="player-note">Showing the official trailer because no self-hosted playback source is configured for this title.</p>
       )}
     </section>
