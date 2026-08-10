@@ -1,0 +1,81 @@
+/* Touch-device finishing pass for the mobile responsiveness audit. */
+
+@media (max-width: 820px) {
+  .brand,
+  .nav-links > a:not(.search-link) {
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+  }
+
+  .nav-links > a:not(.search-link) {
+    padding: 0 2px;
+  }
+
+  .search-link {
+    width: 42px;
+    min-width: 42px;
+    height: 42px;
+    min-height: 42px;
+  }
+
+  .catalog-sort-row .pill {
+    min-height: 40px;
+    display: inline-flex;
+    align-items: center;
+  }
+
+  .catalog-dropdown-trigger,
+  .catalog-apply {
+    height: 44px;
+    min-height: 44px;
+  }
+
+  .catalog-dropdown-option {
+    min-height: 40px;
+  }
+
+  .compact-page-button {
+    width: 42px;
+    height: 42px;
+  }
+
+  .detail-back {
+    min-height: 44px;
+  }
+}
+
+@media (max-width: 480px) {
+  .search-link {
+    width: 40px;
+    min-width: 40px;
+    height: 40px;
+    min-height: 40px;
+  }
+
+  .catalog-dropdown-trigger,
+  .catalog-apply {
+    height: 44px;
+  }
+}
+
+/* Avoid sticky desktop hover treatments after taps on phones/tablets. */
+@media (hover: none) and (pointer: coarse) {
+  .media-card:hover .poster-wrap img {
+    transform: none;
+    filter: none;
+  }
+
+  .button:hover,
+  .pill:hover,
+  .catalog-dropdown-trigger:hover,
+  .catalog-apply:hover,
+  .compact-page-button:hover,
+  .detail-back:hover {
+    transform: none;
+  }
+
+  .catalog-dropdown-option:hover {
+    padding-left: 9px;
+  }
+}
