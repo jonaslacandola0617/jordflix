@@ -1,0 +1,623 @@
+/* Jordflix mobile audit
+   Loaded last so phone/tablet behavior is deterministic across the base,
+   readability, catalog, and cinematic layers. */
+
+@media (max-width: 820px) {
+  html,
+  body {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
+  }
+
+  main,
+  .hero,
+  .hero-content,
+  .page-shell,
+  .page-hero,
+  .detail-hero,
+  .detail-copy,
+  .detail-grid,
+  .catalog-controls,
+  .catalog-discovery-strip,
+  .playback-section,
+  .watch-panel {
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  /* Decorative cinema effects are desktop/tablet-large enhancements only.
+     Removing them on phones prevents glare, compositing artifacts, overflow,
+     and expensive animated blend layers over readable content. */
+  .hero::before,
+  .hero::after,
+  .detail-hero::before,
+  .detail-hero::after,
+  .page-hero::before,
+  .page-hero::after,
+  .player-shell::after,
+  .poster-wrap::after {
+    display: none !important;
+    content: none !important;
+    animation: none !important;
+  }
+
+  .hero h1,
+  .page-title,
+  .detail-copy h1 {
+    color: #f5f3ed !important;
+    -webkit-text-fill-color: #f5f3ed !important;
+    background: none !important;
+    -webkit-background-clip: border-box !important;
+    background-clip: border-box !important;
+    animation: none !important;
+    filter: none !important;
+    text-shadow: none !important;
+    max-width: 100%;
+    overflow-wrap: break-word;
+    word-break: normal;
+    text-wrap: balance;
+  }
+
+  /* Header: keep all destinations available without horizontal squeeze. */
+  .site-header {
+    height: 68px;
+    padding-left: max(14px, env(safe-area-inset-left));
+    padding-right: max(14px, env(safe-area-inset-right));
+    background: rgba(8, 9, 9, .92);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+  }
+
+  .brand {
+    flex: 0 0 auto;
+    gap: 8px;
+    font-size: 17px;
+  }
+
+  .brand-mark {
+    width: 30px;
+    height: 30px;
+    font-size: 20px;
+  }
+
+  .nav-links {
+    min-width: 0;
+    gap: clamp(8px, 2.5vw, 14px);
+  }
+
+  .nav-links > a:not(.search-link) {
+    font-size: 12px;
+    white-space: nowrap;
+  }
+
+  .search-link {
+    flex: 0 0 auto;
+    min-width: 38px;
+    min-height: 38px;
+    display: inline-grid;
+    place-items: center;
+    padding: 0 10px;
+  }
+
+  /* Home hero */
+  .hero {
+    min-height: 80svh;
+    align-items: flex-end;
+  }
+
+  .hero-image {
+    object-position: center center;
+  }
+
+  .hero-content {
+    width: 100%;
+    padding: 0 18px calc(46px + env(safe-area-inset-bottom));
+  }
+
+  .hero h1 {
+    font-size: clamp(48px, 15vw, 78px);
+    line-height: .86;
+    letter-spacing: -.055em;
+    margin-bottom: 22px;
+  }
+
+  .hero-meta {
+    gap: 7px;
+    row-gap: 8px;
+  }
+
+  .hero-meta span {
+    padding-right: 7px;
+  }
+
+  .hero-content p {
+    max-width: 100%;
+    margin: 16px 0 24px;
+    -webkit-line-clamp: 4;
+  }
+
+  .hero-actions {
+    width: 100%;
+  }
+
+  /* Catalog/search pages: eliminate the old page-shell + page-hero double top gap. */
+  .page-shell {
+    padding-top: 0;
+    padding-left: 18px;
+    padding-right: 18px;
+    padding-bottom: 62px;
+  }
+
+  .page-hero {
+    width: 100%;
+    padding-top: 112px;
+    overflow: hidden;
+  }
+
+  .page-title {
+    font-size: clamp(58px, 18vw, 92px);
+    line-height: .86;
+    letter-spacing: -.055em;
+    margin: 14px 0 22px;
+  }
+
+  .page-intro {
+    max-width: 100%;
+    margin-right: 0;
+  }
+
+  .search-form {
+    width: 100%;
+    max-width: 100%;
+    margin: 30px 0 44px;
+  }
+
+  .search-form input {
+    min-width: 0;
+    width: 100%;
+    font-size: clamp(30px, 10vw, 46px);
+  }
+
+  .search-form button {
+    flex: 0 0 auto;
+    min-width: 44px;
+    min-height: 44px;
+  }
+
+  /* Catalog controls and menus */
+  .catalog-controls {
+    z-index: 90;
+    margin-top: 22px;
+    margin-bottom: 30px;
+  }
+
+  .catalog-sort-row {
+    max-width: none;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x proximity;
+  }
+
+  .catalog-sort-row .pill {
+    scroll-snap-align: start;
+  }
+
+  .catalog-discovery-strip {
+    z-index: 80;
+    width: 100%;
+    padding: 9px;
+    gap: 9px;
+    border-radius: 14px;
+    box-shadow: inset 0 1px 0 #ffffff05, 0 10px 28px #00000020;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+
+  .catalog-discovery-strip::before,
+  .catalog-discovery-strip::after {
+    display: none;
+  }
+
+  .catalog-filter-form {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .catalog-dropdown {
+    min-width: 0;
+  }
+
+  .catalog-dropdown-menu {
+    max-width: min(260px, calc(100vw - 36px));
+    max-height: min(245px, 48svh);
+  }
+
+  .catalog-dropdown:last-of-type .catalog-dropdown-menu {
+    left: auto;
+    right: 0;
+  }
+
+  .compact-pagination {
+    min-width: 0;
+  }
+
+  .catalog {
+    z-index: 1;
+    width: 100%;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 24px 10px;
+  }
+
+  .media-card,
+  .poster-wrap,
+  .card-copy,
+  .card-copy > div {
+    min-width: 0;
+  }
+
+  .card-copy h3 {
+    max-width: 100%;
+  }
+
+  .media-rail {
+    width: calc(100% + 18px);
+    margin-right: -18px;
+    padding-right: 18px;
+    grid-auto-columns: minmax(132px, 42vw);
+  }
+
+  /* Title/detail pages */
+  .detail-hero {
+    min-height: 70svh;
+    padding: 116px 18px 42px;
+    overflow: hidden;
+  }
+
+  .detail-backdrop {
+    object-position: center center;
+  }
+
+  .detail-scrim {
+    background:
+      linear-gradient(0deg, #080909 2%, rgba(8, 9, 9, .78) 42%, rgba(8, 9, 9, .24) 75%),
+      linear-gradient(90deg, rgba(8, 9, 9, .90), rgba(8, 9, 9, .18));
+  }
+
+  .detail-copy {
+    width: 100%;
+  }
+
+  .detail-copy h1 {
+    font-size: clamp(46px, 14vw, 74px);
+    line-height: .88;
+    letter-spacing: -.052em;
+    margin: 11px 0 20px;
+  }
+
+  .detail-copy > p {
+    max-width: 100%;
+  }
+
+  .detail-facts {
+    gap: 6px;
+  }
+
+  .detail-grid {
+    width: 100%;
+    padding: 36px 18px 48px;
+    gap: 32px;
+  }
+
+  .detail-grid > * {
+    min-width: 0;
+  }
+
+  .detail-back {
+    top: 76px;
+    left: 12px;
+    max-width: calc(100vw - 24px);
+  }
+
+  .playback-heading {
+    width: 100%;
+  }
+
+  .playback-heading > div {
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  .playback-heading .subhead {
+    max-width: 100%;
+    overflow-wrap: break-word;
+    text-wrap: balance;
+  }
+
+  .player-shell,
+  .trailer {
+    width: 100%;
+    max-width: 100%;
+    border-radius: 14px;
+  }
+
+  .video-player,
+  .trailer iframe {
+    max-width: 100%;
+  }
+
+  .episode-picker {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .episode-picker label,
+  .episode-picker input {
+    min-width: 0;
+  }
+
+  .watch-panel {
+    width: 100%;
+    padding: 20px;
+    border-radius: 18px;
+  }
+
+  .provider-list {
+    width: 100%;
+  }
+
+  .provider {
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  .provider b {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .provider-button {
+    max-width: 100%;
+    text-align: center;
+  }
+
+  .cast-list span {
+    max-width: 100%;
+    overflow-wrap: anywhere;
+  }
+
+  .pagination {
+    width: 100%;
+  }
+
+  .site-footer {
+    margin-top: 48px;
+    padding-left: 18px;
+    padding-right: 18px;
+    padding-bottom: calc(38px + env(safe-area-inset-bottom));
+  }
+}
+
+@media (max-width: 480px) {
+  .brand > span:last-child {
+    display: none;
+  }
+
+  .brand {
+    gap: 0;
+  }
+
+  .nav-links {
+    gap: 10px;
+  }
+
+  .nav-links > a:not(.search-link) {
+    font-size: 11.5px;
+  }
+
+  .search-link {
+    width: 36px;
+    min-width: 36px;
+    height: 36px;
+    min-height: 36px;
+    padding: 0;
+  }
+
+  .hero {
+    min-height: 76svh;
+  }
+
+  .hero-content {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  .hero h1 {
+    font-size: clamp(46px, 15.5vw, 66px);
+  }
+
+  .hero-actions .button {
+    width: 100%;
+  }
+
+  .page-shell {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  .page-hero {
+    padding-top: 104px;
+  }
+
+  .page-title {
+    font-size: clamp(54px, 18vw, 76px);
+  }
+
+  .catalog-sort-row {
+    width: calc(100% + 16px);
+    margin-right: -16px;
+    padding-right: 16px;
+  }
+
+  .catalog-discovery-strip {
+    padding: 8px;
+  }
+
+  .catalog-filter-form {
+    grid-template-columns: 1fr;
+  }
+
+  .catalog-filter-intro {
+    grid-column: auto;
+  }
+
+  .catalog-dropdown-menu,
+  .catalog-dropdown:last-of-type .catalog-dropdown-menu {
+    left: 0;
+    right: auto;
+    width: min(100%, calc(100vw - 48px));
+    max-width: calc(100vw - 48px);
+  }
+
+  .compact-pagination {
+    justify-content: space-between;
+  }
+
+  .detail-hero {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  .detail-grid {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  .playback-heading .subhead {
+    font-size: clamp(28px, 8vw, 34px);
+  }
+
+  .playback-status {
+    display: none;
+  }
+
+  .watch-panel {
+    padding: 18px;
+  }
+
+  .provider {
+    width: 100%;
+  }
+
+  .provider b {
+    max-width: none;
+  }
+
+  .pagination-link {
+    letter-spacing: .04em;
+    text-transform: none;
+  }
+}
+
+@media (max-width: 360px) {
+  .site-header {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+
+  .nav-links {
+    gap: 8px;
+  }
+
+  .nav-links > a:not(.search-link) {
+    font-size: 11px;
+  }
+
+  .hero-content,
+  .page-shell,
+  .detail-hero,
+  .detail-grid,
+  .site-footer {
+    padding-left: 14px;
+    padding-right: 14px;
+  }
+
+  .hero h1 {
+    font-size: clamp(43px, 15vw, 56px);
+  }
+
+  .page-title {
+    font-size: clamp(50px, 17vw, 62px);
+  }
+
+  .detail-copy h1 {
+    font-size: clamp(42px, 13vw, 56px);
+  }
+
+  .catalog {
+    gap: 22px 8px;
+  }
+
+  .episode-picker {
+    grid-template-columns: 1fr;
+  }
+
+  .episode-picker-copy,
+  .episode-picker .button {
+    grid-column: auto;
+  }
+
+  .compact-page-copy {
+    min-width: 62px;
+  }
+
+  .compact-page-actions {
+    gap: 4px;
+  }
+}
+
+/* Phones rotated to landscape can be wider than the normal mobile breakpoint
+   while still having very little vertical room. */
+@media (max-width: 1000px) and (max-height: 540px) {
+  .hero::before,
+  .hero::after,
+  .detail-hero::before,
+  .detail-hero::after,
+  .page-hero::before,
+  .page-hero::after,
+  .player-shell::after,
+  .poster-wrap::after {
+    display: none !important;
+    content: none !important;
+  }
+
+  .hero h1,
+  .page-title,
+  .detail-copy h1 {
+    color: #f5f3ed !important;
+    -webkit-text-fill-color: #f5f3ed !important;
+    background: none !important;
+    animation: none !important;
+    text-shadow: none !important;
+  }
+
+  .hero {
+    min-height: 100svh;
+  }
+
+  .hero-content {
+    padding-bottom: 24px;
+  }
+
+  .hero-content p {
+    -webkit-line-clamp: 2;
+    margin: 10px 0 14px;
+  }
+
+  .detail-hero {
+    min-height: 100svh;
+    padding-top: 92px;
+    padding-bottom: 24px;
+  }
+}
