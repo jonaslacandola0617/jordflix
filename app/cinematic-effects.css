@@ -12,6 +12,7 @@
 .player-shell:hover::after{opacity:.94}
 
 .poster-wrap::after{content:"";position:absolute;inset:-20%;z-index:2;pointer-events:none;background:radial-gradient(circle at 82% 10%,rgba(255,244,225,.28),rgba(255,113,61,.12) 19%,rgba(255,77,48,.035) 38%,transparent 64%);mix-blend-mode:screen;opacity:0;transform:translate3d(7%,-5%,0) scale(.94);transition:opacity .4s ease,transform .6s cubic-bezier(.2,.7,.2,1)}
+.card-overlay{z-index:3}
 .media-card:hover .poster-wrap::after{opacity:.62;transform:translate3d(0,0,0) scale(1)}
 
 @keyframes jordflixBurnDrift{0%{transform:translate3d(0,0,0) rotate(-10deg) scale(.98);opacity:.53}42%{opacity:.77}100%{transform:translate3d(-5vw,4vh,0) rotate(-4deg) scale(1.12);opacity:.64}}
