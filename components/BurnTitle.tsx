@@ -1,3 +1,5 @@
+import type { ReactNode } from "react";
+
 type Props = {
   text: string;
 };
@@ -29,20 +31,31 @@ function burnedCharacterIndexes(text: string) {
 export default function BurnTitle({ text }: Props) {
   const characters = Array.from(text);
   const burned = burnedCharacterIndexes(text);
+  const parts: ReactNode[] = [];
+  let plainText = "";
+  let plainStart = 0;
 
-  return (
-    <>
-      {characters.map((char, index) =>
-        burned.has(index) ? (
-          <span className="burn-title-char is-burned" key={`${index}-${char}`}>
-            {char}
-          </span>
-        ) : (
-          <span className="burn-title-char" key={`${index}-${char}`}>
-            {char}
-          </span>
-        ),
-      )}
-    </>
-  );
+  function flushPlainText() {
+    if (!plainText) return;
+    parts.push(<span key={`plain-${plainStart}`}>{plainText}</span>);
+    plainText = "";
+  }
+
+  characters.forEach((char, index) => {
+    if (!burned.has(index)) {
+      if (!plainText) plainStart = index;
+      plainText += char;
+      return;
+    }
+
+    flushPlainText();
+    parts.push(
+      <span className="burn-title-char is-burned" key={`burn-${index}-${char}`}>
+        {char}
+      </span>,
+    );
+  });
+
+  flushPlainText();
+  return <>{parts}</>;
 }
