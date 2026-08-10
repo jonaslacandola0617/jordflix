@@ -1,0 +1,5 @@
+import type { Metadata } from "next";
+import MediaCard from "@/components/MediaCard";
+import { discover } from "@/lib/tmdb";
+export const metadata: Metadata = { title: "TV Series", description: "Discover TV series with current streaming-provider availability in your region." };
+export default async function SeriesPage() { const data = await discover("tv",1,"popularity.desc"); return <div className="page-shell"><header className="page-hero"><span className="eyebrow">Series · finally finished</span><h1 className="page-title">Series</h1><p className="page-intro">The missing half of Jordflix is here: series discovery, provider-aware availability, and a detail experience designed for seasons, episodes, cast, trailers, and recommendations.</p></header><div className="filter-pills"><span className="pill">Popular</span><span className="pill">Streaming</span><span className="pill">Free / ad-supported included</span></div><section className="catalog">{data.results.map(item=><MediaCard key={item.id} item={item} type="tv" />)}</section></div> }

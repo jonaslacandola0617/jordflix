@@ -1,0 +1,5 @@
+import type { Metadata } from "next";
+import MediaCard from "@/components/MediaCard";
+import { searchMulti } from "@/lib/tmdb";
+export const metadata: Metadata = { title: "Search" };
+export default async function SearchPage({ searchParams }: { searchParams: Promise<{ q?: string }> }) { const { q="" }=await searchParams; const data=q.trim()?await searchMulti(q.trim()):null; return <div className="page-shell"><header className="page-hero"><span className="eyebrow">Search Jordflix</span><h1 className="page-title">Find it.</h1></header><form className="search-form" action="/search"><input autoFocus name="q" defaultValue={q} placeholder="Movie or series" aria-label="Search movies and TV series"/><button aria-label="Submit search">→</button></form>{data?.results.length?<section className="catalog">{data.results.map(item=><MediaCard key={`${item.media_type}-${item.id}`} item={item} type={(item.media_type||"movie") as "movie"|"tv"}/>)}</section>:q?<p className="empty">Nothing matched “{q}”. Try another title.</p>:<p className="empty">Search movies and series across TMDB.</p>}</div> }

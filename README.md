@@ -1,66 +1,30 @@
-<h1 align="center">Jordflix</h1>
+# Jordflix 2.0
 
-<p align="center">Jordflix is a sleek, modern movie browsing app inspired by Netflix. Built with love, this project lets users explore trending films, search for their favorite titles, and enjoy a stunning cinematic UI. Whether you're a film buff or just looking for something to watch, Jordflix gives you that movie night vibe, anytime, anywhere.</p>
+Jordflix is a premium movie and TV discovery experience powered by TMDB, rebuilt from the original Vite prototype with a server-rendered Next.js foundation.
 
-<img src="./public/screenshot.png">
+## What changed
 
----
+- Complete Movies and TV Series experiences
+- Responsive cinematic UI for mobile, tablet, and desktop
+- Server-side TMDB access so credentials are not shipped to browsers
+- Regional provider-aware discovery (`flatrate`, `free`, and ad-supported availability)
+- Per-title provider panels with rent/buy options when available
+- Official trailer playback via privacy-enhanced YouTube embeds
+- Dynamic title metadata, canonical URLs, Open Graph/Twitter metadata, JSON-LD, robots.txt, and sitemap.xml
+- No dependency on unofficial streaming mirrors or their advertising layers
 
-## ✨ Features
+## Setup
 
-- 🔎 Browse trending and top-rated movies
-- 📽️ View detailed information about each film
-- 💬 Clean, responsive UI for all devices
-- 🌙 Dark-mode aesthetic, Netflix-style
-- ⚡ Fast load times and smooth animations
-- 🔍 Real-time search for movies
-- 💅 Built with modern tools and minimalistic design
+1. Copy `.env.example` to `.env.local`.
+2. Add either a TMDB v4 Read Access Token (`TMDB_API_TOKEN`) or v3 key (`TMDB_API_KEY`). The v4 token is preferred.
+3. Set `DEFAULT_REGION=PH` (or another ISO country code) for provider availability.
+4. Set `NEXT_PUBLIC_SITE_URL` to the final production domain.
+5. Run `npm install` and `npm run dev`.
 
----
+> Security: the old public repository tracked a TMDB key in `.env`. Rotate that credential in TMDB before deploying Jordflix 2.0.
 
-## 🛠️ Tech Stack
+## Playback architecture
 
-- **React** – Framework for building the frontend
-- **ShadCN & Tailwind CSS** – For styling and responsive design
-- **TMDB API** – For fetching movie data
-- **VidSrc** – For streaming movie or series
-- **Vercel** – For deployment
+Jordflix 2.0 deliberately does not embed unofficial streaming mirrors. The provider panel uses TMDB/JustWatch availability and sends viewers toward legitimate services. If you later have licensed/self-hosted playback, add a provider adapter and expose only authorized sources through the title page.
 
----
-
-## 🚀 Setup and Installation
-
-1. **Clone the Repository**
-
-   ```bash
-   git clone https://github.com/your-username/jordflix.git
-   cd jordflix
-   ```
-
-2. **Install Dependencies**
-
-   ```bash
-   npm install
-   ```
-
-3. **Configure Environment Variables**  
-   Create a `.env.local` file in the root of the project and add your TMDB API key:
-
-   ```env
-   API_KEY=your_tmdb_api_key_here
-   API_URL=your_vidsrc_url_here
-   ```
-
-4. **Run the Development Server**
-
-   ```bash
-   npm run dev
-   ```
-
-5. **Open in Browser**  
-   Go to `http://localhost:5173` to see Jordflix in action.
-
----
-
-🧡 Powered by The Movie Database (TMDB).  
-Built with good vibes, great movies, and lots of 💖.
+Data attribution: This product uses the TMDB API but is not endorsed or certified by TMDB. Streaming provider availability is supplied through TMDB's JustWatch-backed watch-provider data.

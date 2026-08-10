@@ -1,0 +1,5 @@
+import type { Metadata } from "next";
+import MediaCard from "@/components/MediaCard";
+import { discover } from "@/lib/tmdb";
+export const metadata: Metadata = { title: "Movies", description: "Browse movies currently listed on streaming providers in your region." };
+export default async function MoviesPage() { const data = await discover("movie",1,"popularity.desc"); return <div className="page-shell"><header className="page-hero"><span className="eyebrow">Cinema · curated by availability</span><h1 className="page-title">Movies</h1><p className="page-intro">A cleaner way to browse films that have a current online provider listing in your region—not an endless catalog of titles you cannot actually find.</p></header><div className="filter-pills"><span className="pill">Popular</span><span className="pill">Streaming</span><span className="pill">Free / ad-supported included</span></div><section className="catalog">{data.results.map(item=><MediaCard key={item.id} item={item} type="movie" />)}</section></div> }

@@ -1,0 +1,3 @@
+import type { MetadataRoute } from "next";
+import { trending } from "@/lib/tmdb";
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> { const base=process.env.NEXT_PUBLIC_SITE_URL||"http://localhost:3000"; const [movies,series]=await Promise.all([trending("movie"),trending("tv")]); return [{url:base,changeFrequency:"daily",priority:1},{url:`${base}/movies`,changeFrequency:"daily",priority:.9},{url:`${base}/series`,changeFrequency:"daily",priority:.9},{url:`${base}/search`,changeFrequency:"weekly",priority:.5},...movies.slice(0,20).map(x=>({url:`${base}/title/movie/${x.id}`,changeFrequency:"weekly" as const,priority:.7})),...series.slice(0,20).map(x=>({url:`${base}/title/tv/${x.id}`,changeFrequency:"weekly" as const,priority:.7}))]; }
