@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Manrope, Playfair_Display } from "next/font/google";
 import "./globals.css";
+import "./polish.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 
@@ -13,9 +14,11 @@ export const metadata: Metadata = {
   title: { default: "Jordflix — Find something worth watching", template: "%s · Jordflix" },
   description: "A cinematic movie and series discovery experience with regional streaming availability, powered by TMDB.",
   applicationName: "Jordflix",
+  category: "entertainment",
   keywords: ["movies", "TV series", "streaming availability", "movie discovery", "TMDB", "Jordflix"],
   alternates: { canonical: "/" },
-  openGraph: { type: "website", siteName: "Jordflix", title: "Jordflix", description: "Find something worth watching." },
+  manifest: "/manifest.webmanifest",
+  openGraph: { type: "website", siteName: "Jordflix", title: "Jordflix", description: "Find something worth watching.", url: "/" },
   twitter: { card: "summary_large_image", title: "Jordflix", description: "Find something worth watching." },
 };
 
