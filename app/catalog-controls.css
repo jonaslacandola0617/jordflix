@@ -1,0 +1,25 @@
+/* Catalog controls: sort, genre/country filters, and top pagination. */
+.catalog-toolbar{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;margin:30px 0 46px;padding-bottom:22px;border-bottom:1px solid #ffffff10}
+.catalog-toolbar-main{display:flex;align-items:flex-end;gap:14px;flex-wrap:wrap;min-width:0}
+.catalog-toolbar .filter-pills{margin:0}
+.catalog-filter-form{display:flex;align-items:flex-end;gap:8px;flex-wrap:wrap}
+.catalog-select{position:relative;display:flex;flex-direction:column;gap:5px}
+.catalog-select>span{padding-left:3px;color:#6f6d67;font-size:9px;font-weight:800;letter-spacing:.12em;text-transform:uppercase}
+.catalog-select select{appearance:none;min-width:150px;height:40px;padding:0 36px 0 13px;border:1px solid #ffffff1e;border-radius:999px;background-color:#0b0c0c;color:#c9c6bf;font:700 12px/1 var(--font-sans),sans-serif;outline:none;cursor:pointer;background-image:linear-gradient(45deg,transparent 50%,#777 50%),linear-gradient(135deg,#777 50%,transparent 50%);background-position:calc(100% - 16px) 17px,calc(100% - 12px) 17px;background-size:4px 4px,4px 4px;background-repeat:no-repeat;transition:border-color .2s,background-color .2s,color .2s}
+.catalog-select select:hover,.catalog-select select:focus{border-color:#ffffff38;background-color:#101111;color:#f4f1e9}
+.catalog-select select:focus-visible{box-shadow:0 0 0 3px #ff604714;border-color:#ff604780}
+.catalog-apply{height:40px;padding:0 15px;border:0;border-radius:999px;background:#f4f1e9;color:#080909;font:800 12px/1 var(--font-sans),sans-serif;cursor:pointer;transition:transform .2s,background .2s}
+.catalog-apply:hover{transform:translateY(-1px);background:#fff}
+.catalog-clear{height:40px;display:inline-flex;align-items:center;padding:0 9px;color:#77756f;font-size:11px;font-weight:800;transition:color .2s}
+.catalog-clear:hover{color:#ff765f}
+.compact-pagination{display:flex;align-items:center;gap:7px;flex:none;margin-bottom:1px}
+.compact-page-button{width:40px;height:40px;display:grid;place-items:center;border:1px solid #ffffff1e;border-radius:50%;color:#eeeae2;font-size:16px;transition:background .2s,border-color .2s,color .2s,transform .2s}
+a.compact-page-button:hover{background:#f4f1e9;border-color:#f4f1e9;color:#080909;transform:translateY(-1px)}
+.compact-page-button.disabled{color:#3f403d;border-color:#ffffff0d;cursor:default}
+.compact-page-status{min-width:76px;text-align:center;color:#77756f;font-size:11px;font-weight:700;letter-spacing:.07em}
+.compact-page-status b{color:#e5e2db;font-size:13px}
+.compact-page-status i{font-style:normal;color:#454541;margin:0 6px}
+
+@media(max-width:1200px){.catalog-toolbar{align-items:flex-start;flex-direction:column}.compact-pagination{align-self:flex-end}}
+@media(max-width:700px){.catalog-toolbar{gap:16px;margin-top:24px;margin-bottom:34px;padding-bottom:18px}.catalog-toolbar-main{width:100%;gap:12px}.catalog-toolbar .filter-pills{width:calc(100% + 18px);margin-right:-18px;padding-right:18px}.catalog-filter-form{display:grid;grid-template-columns:1fr 1fr;width:100%;gap:9px}.catalog-select{min-width:0}.catalog-select select{width:100%;min-width:0;height:44px;font-size:11.5px}.catalog-select>span{font-size:8.5px}.catalog-apply{height:44px}.catalog-clear{height:44px;justify-content:center}.compact-pagination{align-self:stretch;justify-content:flex-end;width:100%}.compact-page-button{width:42px;height:42px}.compact-page-status{min-width:82px}}
+@media(max-width:430px){.catalog-filter-form{grid-template-columns:1fr}.catalog-clear{position:absolute;right:18px;margin-top:1px}.catalog-select select{height:46px}.catalog-apply{height:46px}}
