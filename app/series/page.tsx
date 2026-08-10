@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import BurnTitle from "@/components/BurnTitle";
 import CatalogFilters from "@/components/CatalogFilters";
 import CompactPagination from "@/components/CompactPagination";
 import MediaCard from "@/components/MediaCard";
@@ -62,7 +63,7 @@ export default async function SeriesPage({ searchParams }: { searchParams: Promi
     <div className="page-shell">
       <header className="page-hero">
         <span className="eyebrow">Television · streaming in your region</span>
-        <h1 className="page-title">Series</h1>
+        <h1 className="page-title burn-title"><BurnTitle text="Series" /></h1>
         <p className="page-intro">Discover series with regional provider availability, rich title details, official trailers, cast information, season counts, and recommendations.</p>
       </header>
 
