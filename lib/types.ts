@@ -21,6 +21,27 @@ export interface MediaItem {
   genre_ids?: number[];
 }
 
+export interface Episode {
+  id: number;
+  name: string;
+  overview: string;
+  episode_number: number;
+  season_number: number;
+  air_date?: string;
+  still_path: string | null;
+  runtime?: number;
+}
+
+export interface SeasonDetails {
+  id: number;
+  name: string;
+  overview: string;
+  season_number: number;
+  air_date?: string;
+  poster_path: string | null;
+  episodes: Episode[];
+}
+
 export interface MediaDetails extends MediaItem {
   genres: Genre[];
   runtime?: number;
