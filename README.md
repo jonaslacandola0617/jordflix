@@ -23,6 +23,10 @@ Jordflix is a premium movie and TV discovery experience powered by TMDB, rebuilt
 
 > Security: the old public repository tracked a TMDB key in `.env`. Rotate that credential in TMDB before deploying Jordflix 2.0.
 
+## Vercel deployment
+
+Jordflix 2.0 is a Next.js application. In Vercel, use the Next.js Framework Preset (or automatic framework detection) and make the TMDB environment variables available to both Preview and Production deployments. A branch preview is the recommended place to verify the rebuild before merging it into `main`.
+
 ## Playback architecture
 
 Jordflix 2.0 deliberately does not embed unofficial streaming mirrors. The provider panel uses TMDB/JustWatch availability and sends viewers toward legitimate services. If you later have licensed/self-hosted playback, add a provider adapter and expose only authorized sources through the title page.
