@@ -8,6 +8,7 @@ import "./catalog-controls.css";
 import "./burn-title.css";
 import "./mobile-audit.css";
 import "./touch-audit.css";
+import "./ux-fixes.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 
