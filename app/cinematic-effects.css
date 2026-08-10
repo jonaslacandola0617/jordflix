@@ -14,6 +14,39 @@
 .page-hero::before{content:"";position:absolute;z-index:0;pointer-events:none;width:min(78vw,980px);height:430px;left:42%;top:70px;border-radius:50%;background:radial-gradient(ellipse at 34% 48%,rgba(255,248,226,.30) 0 3%,rgba(255,133,73,.24) 13%,rgba(255,78,43,.16) 31%,rgba(255,45,30,.07) 47%,transparent 70%);mix-blend-mode:screen;filter:blur(10px);opacity:.82;transform:rotate(-7deg);animation:jordflixCatalogBurn 12s ease-in-out infinite alternate;will-change:transform,opacity}
 .page-hero::after{content:"";position:absolute;z-index:1;pointer-events:none;width:78vw;height:340px;left:26%;top:104px;background:linear-gradient(108deg,transparent 36%,rgba(255,88,44,.06) 50%,rgba(255,237,206,.23) 57%,rgba(255,116,61,.13) 63%,transparent 72%);mix-blend-mode:screen;filter:blur(17px);opacity:.58;transform:translate3d(-9%,0,0) rotate(-3deg);animation:jordflixCatalogGlare 14s cubic-bezier(.45,.02,.3,1) infinite;will-change:transform,opacity}
 
+/* Burned-film display type: hot exposed center, orange edge, and red emulsion bloom. */
+.hero h1,.page-title,.detail-copy h1{
+  color:#ffe8a8;
+  -webkit-text-fill-color:transparent;
+  -webkit-background-clip:text;
+  background-clip:text;
+  background-image:linear-gradient(108deg,#fff6d9 0%,#ffd565 18%,#ff9b38 36%,#fff4c7 49%,#ffbd45 61%,#ff7a32 78%,#ffe4a0 100%);
+  background-size:220% 100%;
+  background-position:8% 50%;
+  -webkit-text-stroke:.35px rgba(255,168,71,.72);
+  text-shadow:
+    0 0 1px rgba(255,248,218,.92),
+    0 0 4px rgba(255,214,95,.84),
+    0 0 9px rgba(255,136,51,.72),
+    0 0 18px rgba(255,76,33,.55),
+    0 0 34px rgba(181,35,21,.34),
+    0 5px 36px rgba(90,12,7,.28);
+  filter:saturate(1.08) contrast(1.03);
+  animation:jordflixTitleBurn 10.5s ease-in-out infinite alternate;
+  will-change:background-position,filter,text-shadow;
+}
+
+/* Detail titles sit on photographic art, so keep their outer bloom a touch tighter. */
+.detail-copy h1{
+  text-shadow:
+    0 0 1px rgba(255,248,218,.92),
+    0 0 4px rgba(255,210,90,.78),
+    0 0 8px rgba(255,128,46,.62),
+    0 0 15px rgba(255,69,30,.45),
+    0 0 27px rgba(150,28,18,.26),
+    0 5px 30px rgba(30,4,3,.32);
+}
+
 /* Playback gets only a restrained optical reflection so controls remain readable. */
 .player-shell::after{content:"";position:absolute;inset:0;z-index:4;pointer-events:none;background:radial-gradient(ellipse 62% 36% at 98% 0%,rgba(255,250,232,.20),rgba(255,126,71,.10) 32%,transparent 71%),linear-gradient(115deg,transparent 71%,rgba(255,91,49,.055),rgba(255,244,225,.085) 91%,transparent);mix-blend-mode:screen;opacity:.76;transition:opacity .35s ease}
 .player-shell:hover::after{opacity:.98}
@@ -22,6 +55,14 @@
 .poster-wrap::after{content:"";position:absolute;inset:-20%;z-index:2;pointer-events:none;background:radial-gradient(circle at 82% 10%,rgba(255,244,225,.31),rgba(255,113,61,.14) 19%,rgba(255,77,48,.04) 38%,transparent 64%);mix-blend-mode:screen;opacity:0;transform:translate3d(7%,-5%,0) scale(.94);transition:opacity .4s ease,transform .6s cubic-bezier(.2,.7,.2,1)}
 .card-overlay{z-index:3}
 .media-card:hover .poster-wrap::after{opacity:.70;transform:translate3d(0,0,0) scale(1)}
+
+@keyframes jordflixTitleBurn{
+  0%{background-position:0% 50%;filter:saturate(1.02) contrast(1.02);text-shadow:0 0 1px rgba(255,248,218,.92),0 0 4px rgba(255,214,95,.78),0 0 8px rgba(255,136,51,.60),0 0 16px rgba(255,76,33,.42),0 0 29px rgba(181,35,21,.27),0 5px 32px rgba(90,12,7,.24)}
+  31%{filter:saturate(1.15) contrast(1.04)}
+  48%{background-position:53% 50%;text-shadow:0 0 1px rgba(255,251,227,1),0 0 5px rgba(255,223,111,.92),0 0 11px rgba(255,147,55,.78),0 0 22px rgba(255,72,31,.61),0 0 41px rgba(190,34,20,.39),0 6px 40px rgba(90,12,7,.29)}
+  73%{filter:saturate(1.09) contrast(1.05)}
+  100%{background-position:100% 50%;filter:saturate(1.13) contrast(1.03);text-shadow:0 0 1px rgba(255,248,218,.96),0 0 4px rgba(255,217,92,.84),0 0 9px rgba(255,125,44,.68),0 0 19px rgba(255,64,27,.52),0 0 35px rgba(168,28,17,.32),0 5px 35px rgba(78,10,6,.26)}
+}
 
 @keyframes jordflixBurnDrift{0%{transform:translate3d(1vw,-1vh,0) rotate(-10deg) scale(.98);opacity:.67}38%{opacity:.96}100%{transform:translate3d(-6vw,5vh,0) rotate(-4deg) scale(1.14);opacity:.76}}
 @keyframes jordflixGlareSweep{0%,16%{transform:translate3d(-24%,1%,0) rotate(-2deg);opacity:.14}38%{opacity:.74}61%{transform:translate3d(9%,-1%,0) rotate(1deg);opacity:.50}100%{transform:translate3d(25%,0,0) rotate(2deg);opacity:.09}}
@@ -34,12 +75,14 @@
   .hero::after,.detail-hero::after{opacity:.36;filter:blur(12px)}
   .page-hero::before{width:110vw;height:300px;left:32%;top:58px;opacity:.60}
   .page-hero::after{width:110vw;height:260px;left:15%;top:76px;opacity:.38;filter:blur(13px)}
+  .hero h1,.page-title,.detail-copy h1{-webkit-text-stroke:.25px rgba(255,168,71,.62);text-shadow:0 0 1px rgba(255,248,218,.9),0 0 4px rgba(255,206,84,.72),0 0 8px rgba(255,121,43,.58),0 0 16px rgba(255,65,28,.43),0 0 27px rgba(161,26,16,.25)}
   .player-shell::after{opacity:.52}
   .media-card:hover .poster-wrap::after{opacity:.42}
 }
 
 @media(prefers-reduced-motion:reduce){
-  .hero::before,.detail-hero::before,.hero::after,.detail-hero::after,.page-hero::before,.page-hero::after{animation:none}
+  .hero::before,.detail-hero::before,.hero::after,.detail-hero::after,.page-hero::before,.page-hero::after,.hero h1,.page-title,.detail-copy h1{animation:none}
   .hero::before{opacity:.66}.detail-hero::before{opacity:.52}.hero::after,.detail-hero::after{opacity:.30}
   .page-hero::before{opacity:.58}.page-hero::after{opacity:.30}
+  .hero h1,.page-title,.detail-copy h1{background-position:48% 50%;filter:none}
 }
