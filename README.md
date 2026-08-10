@@ -46,6 +46,6 @@ PLAYBACK_URL_TEMPLATE=https://media.example.com/library/{type}/{id}/video.mp4
 
 The browser receives that resolved URL and plays it with native video controls, including fullscreen where supported. MP4 is the most broadly compatible option; browser-compatible HLS (`.m3u8`) can also be used. If no media source is configured, the player falls back to the official TMDB-listed YouTube trailer when one exists.
 
-This playback hook is intended for media you own, host, license, or otherwise have permission to stream. Jordflix does not embed unofficial streaming mirrors.
+This playback hook is intended for personal or shared media you own, host, license, or otherwise have permission to stream. Jordflix does not embed unofficial streaming mirrors.
 
 Data attribution: This product uses the TMDB API but is not endorsed or certified by TMDB. Streaming provider availability is supplied through TMDB's JustWatch-backed watch-provider data.
