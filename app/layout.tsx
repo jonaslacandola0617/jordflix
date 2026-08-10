@@ -3,6 +3,7 @@ import { Manrope, Playfair_Display } from "next/font/google";
 import "./globals.css";
 import "./polish.css";
 import "./readability.css";
+import "./cinematic-effects.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 
