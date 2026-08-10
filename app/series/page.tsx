@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import CatalogFilters from "@/components/CatalogFilters";
+import CompactPagination from "@/components/CompactPagination";
 import MediaCard from "@/components/MediaCard";
 import Pagination from "@/components/Pagination";
-import { discover } from "@/lib/tmdb";
+import { countries, discover, genres } from "@/lib/tmdb";
 
 export const metadata: Metadata = {
   title: "TV Series",
@@ -16,18 +18,45 @@ const sorts = {
 } as const;
 
 type SortKey = keyof typeof sorts;
+type Query = { page?: string; sort?: string; genre?: string; country?: string };
 
 function pageNumber(value?: string) {
   const parsed = Number.parseInt(value || "1", 10);
   return Number.isFinite(parsed) ? Math.min(500, Math.max(1, parsed)) : 1;
 }
 
-export default async function SeriesPage({ searchParams }: { searchParams: Promise<{ page?: string; sort?: string }> }) {
+function genreId(value?: string) {
+  return value && /^\d+$/.test(value) ? value : "";
+}
+
+function countryCode(value?: string) {
+  return value && /^[A-Za-z]{2}$/.test(value) ? value.toUpperCase() : "";
+}
+
+export default async function SeriesPage({ searchParams }: { searchParams: Promise<Query> }) {
   const params = await searchParams;
   const page = pageNumber(params.page);
   const activeSort: SortKey = params.sort && params.sort in sorts ? params.sort as SortKey : "popular";
+  const activeGenre = genreId(params.genre);
+  const activeCountry = countryCode(params.country);
   const config = sorts[activeSort];
-  const data = await discover("tv", page, config.sort, config.extra);
+  const filterExtra = {
+    ...config.extra,
+    with_genres: activeGenre || undefined,
+    with_origin_country: activeCountry || undefined,
+  };
+
+  const [data, genreOptions, countryOptions] = await Promise.all([
+    discover("tv", page, config.sort, filterExtra),
+    genres("tv"),
+    countries(),
+  ]);
+
+  const persistentQuery = {
+    sort: activeSort,
+    genre: activeGenre || undefined,
+    country: activeCountry || undefined,
+  };
 
   return (
     <div className="page-shell">
@@ -36,14 +65,28 @@ export default async function SeriesPage({ searchParams }: { searchParams: Promi
         <h1 className="page-title">Series</h1>
         <p className="page-intro">Discover series with regional provider availability, rich title details, official trailers, cast information, season counts, and recommendations.</p>
       </header>
-      <nav className="filter-pills" aria-label="Sort TV series">
-        {Object.entries(sorts).map(([key, value]) => (
-          <Link key={key} className={`pill ${activeSort === key ? "active" : ""}`} href={{ pathname: "/series", query: { sort: key } }}>{value.label}</Link>
-        ))}
-        <span className="pill informational">Streaming · free · ad-supported</span>
-      </nav>
-      {data.results.length ? <section className="catalog">{data.results.map(item => <MediaCard key={item.id} item={item} type="tv" />)}</section> : <p className="empty">No series were returned for this page.</p>}
-      <Pagination page={page} totalPages={data.total_pages} basePath="/series" query={{ sort: activeSort }} />
+
+      <div className="catalog-toolbar">
+        <div className="catalog-toolbar-main">
+          <nav className="filter-pills" aria-label="Sort TV series">
+            {Object.entries(sorts).map(([key, value]) => (
+              <Link
+                key={key}
+                className={`pill ${activeSort === key ? "active" : ""}`}
+                href={{ pathname: "/series", query: { sort: key, genre: activeGenre || undefined, country: activeCountry || undefined } }}
+              >
+                {value.label}
+              </Link>
+            ))}
+            <span className="pill informational">Streaming · free · ad-supported</span>
+          </nav>
+          <CatalogFilters basePath="/series" sort={activeSort} genre={activeGenre} country={activeCountry} genres={genreOptions} countries={countryOptions} />
+        </div>
+        <CompactPagination page={page} totalPages={data.total_pages} basePath="/series" query={persistentQuery} />
+      </div>
+
+      {data.results.length ? <section className="catalog">{data.results.map(item => <MediaCard key={item.id} item={item} type="tv" />)}</section> : <p className="empty">No series match these filters.</p>}
+      <Pagination page={page} totalPages={data.total_pages} basePath="/series" query={persistentQuery} />
     </div>
   );
 }
