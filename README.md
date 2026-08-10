@@ -32,20 +32,14 @@ Jordflix 2.0 is a Next.js application. In Vercel, use the Next.js Framework Pres
 
 ## Playback architecture
 
-Each title page contains a Jordflix playback theater. If `PLAYBACK_URL_TEMPLATE` is configured, Jordflix resolves a title-specific media URL by replacing these placeholders:
-
-- `{type}` → `movie` or `tv`
-- `{id}` → the TMDB title ID
-- `{tmdbId}` → the same TMDB title ID
-
-Example:
+Each title page contains a Jordflix playback theater. `PLAYBACK_URL_TEMPLATE` can resolve your media by TMDB ID using `{type}`, `{id}`, or `{tmdbId}` placeholders.
 
 ```env
 PLAYBACK_URL_TEMPLATE=https://media.example.com/library/{type}/{id}/video.mp4
 ```
 
-The browser receives that resolved URL and plays it with native video controls, including fullscreen where supported. MP4 is the most broadly compatible option; browser-compatible HLS (`.m3u8`) can also be used. If no media source is configured, the player falls back to the official TMDB-listed YouTube trailer when one exists.
+The resolved media plays with native controls and fullscreen support where available. MP4 is the most broadly compatible option; browser-compatible HLS (`.m3u8`) can also be used. Without a configured media source, the player falls back to the official TMDB-listed YouTube trailer.
 
-This playback hook is intended for personal or shared media you own, host, license, or otherwise have permission to stream. Jordflix does not embed unofficial streaming mirrors.
+The playback hook is intended for personal or shared media you own, host, license, or otherwise have permission to stream. Jordflix does not embed unofficial streaming mirrors.
 
 Data attribution: This product uses the TMDB API but is not endorsed or certified by TMDB. Streaming provider availability is supplied through TMDB's JustWatch-backed watch-provider data.
