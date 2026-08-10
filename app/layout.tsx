@@ -5,6 +5,7 @@ import "./polish.css";
 import "./readability.css";
 import "./cinematic-effects.css";
 import "./catalog-controls.css";
+import "./burn-title.css";
 import "./mobile-audit.css";
 import "./touch-audit.css";
 import Header from "@/components/Header";
