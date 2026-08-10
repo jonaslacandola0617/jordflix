@@ -1,4 +1,4 @@
-import type { MediaDetails, MediaItem, MediaType, ProviderRegion } from "@/lib/types";
+import type { MediaDetails, MediaItem, MediaType, ProviderRegion, SeasonDetails } from "@/lib/types";
 
 const BASE_URL = "https://api.themoviedb.org/3";
 const token = process.env.TMDB_API_TOKEN;
@@ -41,6 +41,10 @@ export async function trending(type: MediaType = "movie") {
 
 export async function details(type: MediaType, id: string | number) {
   return tmdb<MediaDetails>(`/${type}/${id}`, { append_to_response: "videos,credits,recommendations", language: "en-US" });
+}
+
+export async function seasonDetails(tvId: string | number, seasonNumber: string | number) {
+  return tmdb<SeasonDetails>(`/tv/${tvId}/season/${seasonNumber}`, { language: "en-US" });
 }
 
 export async function watchProviders(type: MediaType, id: string | number) {
