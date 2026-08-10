@@ -73,12 +73,6 @@ export default function PlaybackPlayer({ title, embedUrl, source, trailerKey, po
         )}
       </div>
 
-      {embedUrl && (
-        <div className="player-note-row">
-          <p className="player-note">Using your configured self-hosted embed route.</p>
-          <a className="player-open-link" href={embedUrl} target="_blank" rel="noreferrer">Open player ↗</a>
-        </div>
-      )}
       {!embedUrl && source && isHls && (
         <p className="player-note">HLS playback depends on browser support. MP4 works most consistently across desktop and mobile browsers.</p>
       )}
