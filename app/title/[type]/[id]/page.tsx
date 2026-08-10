@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import { notFound } from "next/navigation";
+import BackButton from "@/components/BackButton";
 import EpisodePicker from "@/components/EpisodePicker";
 import MediaRow from "@/components/MediaRow";
 import PlaybackPlayer from "@/components/PlaybackPlayer";
@@ -83,6 +84,7 @@ export default async function TitlePage({ params, searchParams }: { params: Prom
 
   return <>
     <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }}/>
+    <BackButton fallback={type === "movie" ? "/movies" : "/series"} />
     <section className="detail-hero">
       {item.backdrop_path && <Image className="detail-backdrop" src={image(item.backdrop_path, "original")} alt="" fill priority sizes="100vw"/>}
       <div className="detail-scrim"/>
