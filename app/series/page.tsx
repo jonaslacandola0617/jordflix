@@ -66,23 +66,24 @@ export default async function SeriesPage({ searchParams }: { searchParams: Promi
         <p className="page-intro">Discover series with regional provider availability, rich title details, official trailers, cast information, season counts, and recommendations.</p>
       </header>
 
-      <div className="catalog-toolbar">
-        <div className="catalog-toolbar-main">
-          <nav className="filter-pills" aria-label="Sort TV series">
-            {Object.entries(sorts).map(([key, value]) => (
-              <Link
-                key={key}
-                className={`pill ${activeSort === key ? "active" : ""}`}
-                href={{ pathname: "/series", query: { sort: key, genre: activeGenre || undefined, country: activeCountry || undefined } }}
-              >
-                {value.label}
-              </Link>
-            ))}
-            <span className="pill informational">Streaming · free · ad-supported</span>
-          </nav>
+      <div className="catalog-controls">
+        <nav className="filter-pills catalog-sort-row" aria-label="Sort TV series">
+          {Object.entries(sorts).map(([key, value]) => (
+            <Link
+              key={key}
+              className={`pill ${activeSort === key ? "active" : ""}`}
+              href={{ pathname: "/series", query: { sort: key, genre: activeGenre || undefined, country: activeCountry || undefined } }}
+            >
+              {value.label}
+            </Link>
+          ))}
+          <span className="pill informational">Streaming · free · ad-supported</span>
+        </nav>
+
+        <div className="catalog-discovery-strip">
           <CatalogFilters basePath="/series" sort={activeSort} genre={activeGenre} country={activeCountry} genres={genreOptions} countries={countryOptions} />
+          <CompactPagination page={page} totalPages={data.total_pages} basePath="/series" query={persistentQuery} />
         </div>
-        <CompactPagination page={page} totalPages={data.total_pages} basePath="/series" query={persistentQuery} />
       </div>
 
       {data.results.length ? <section className="catalog">{data.results.map(item => <MediaCard key={item.id} item={item} type="tv" />)}</section> : <p className="empty">No series match these filters.</p>}
