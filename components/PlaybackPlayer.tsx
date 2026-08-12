@@ -90,12 +90,39 @@ export default function PlaybackPlayer({ title, embedSources = [], source, trail
   const embedUrl = activeSource?.url || null;
   const isHls = source ? /\.m3u8(?:$|\?)/i.test(source) : false;
   const hasPlayback = Boolean(embedUrl || source);
+  const canFullscreen = Boolean(hasPlayback || trailerKey);
+  const playerShellRef = useRef<HTMLDivElement>(null);
+  const [isFullscreen, setIsFullscreen] = useState(false);
 
   useEffect(() => {
     if (!selectedSource && firstServerId && selectedServerId !== firstServerId) {
       setSelectedServerId(firstServerId);
     }
   }, [firstServerId, selectedServerId, selectedSource]);
+
+  useEffect(() => {
+    const syncFullscreenState = () => {
+      setIsFullscreen(document.fullscreenElement === playerShellRef.current);
+    };
+
+    document.addEventListener("fullscreenchange", syncFullscreenState);
+    return () => document.removeEventListener("fullscreenchange", syncFullscreenState);
+  }, []);
+
+  const toggleFullscreen = async () => {
+    const playerShell = playerShellRef.current;
+    if (!playerShell) return;
+
+    try {
+      if (document.fullscreenElement) {
+        await document.exitFullscreen();
+      } else {
+        await playerShell.requestFullscreen();
+      }
+    } catch {
+      // Some embedded sources may reject fullscreen until a direct user gesture.
+    }
+  };
 
   return (
     <section className="playback-section" id="watch" aria-labelledby="watch-heading">
@@ -109,7 +136,19 @@ export default function PlaybackPlayer({ title, embedSources = [], source, trail
         </span>
       </div>
 
-      <div className="player-shell">
+      <div className="player-shell" ref={playerShellRef}>
+        {canFullscreen && (
+          <button
+            className="player-fullscreen-button"
+            type="button"
+            onClick={toggleFullscreen}
+            aria-label={isFullscreen ? "Exit fullscreen" : "Enter fullscreen"}
+            title={isFullscreen ? "Exit fullscreen" : "Fullscreen"}
+          >
+            <span aria-hidden="true">{isFullscreen ? "↙" : "⛶"}</span>
+          </button>
+        )}
+
         {embedUrl ? (
           <iframe
             key={`${activeSource?.id}:${embedUrl}`}
