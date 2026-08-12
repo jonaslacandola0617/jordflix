@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 
 const PING_EVENT = "jordflix:companion:ping";
 const PONG_EVENT = "jordflix:companion:pong";
@@ -80,11 +81,19 @@ export default function WatchGate() {
 
   useEffect(() => {
     if (!open) return;
+
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+
     const onKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Escape") setOpen(false);
     };
+
     window.addEventListener("keydown", onKeyDown);
-    return () => window.removeEventListener("keydown", onKeyDown);
+    return () => {
+      window.removeEventListener("keydown", onKeyDown);
+      document.body.style.overflow = previousOverflow;
+    };
   }, [open]);
 
   const proceed = () => {
@@ -122,14 +131,11 @@ export default function WatchGate() {
     if (detected) proceed();
   };
 
-  return (
-    <>
-      <button className="button primary watch-gate-button" type="button" onClick={handleWatch} disabled={checking}>
-        {checking ? "Checking…" : "▶ Watch now"}
-      </button>
-
-      {open && (
-        <div className="companion-prompt-layer" role="presentation">
+  const prompt = open && typeof document !== "undefined"
+    ? createPortal(
+        <div className="companion-prompt-layer" role="presentation" onMouseDown={event => {
+          if (event.target === event.currentTarget) setOpen(false);
+        }}>
           <section className="companion-prompt" role="dialog" aria-modal="true" aria-labelledby="companion-title">
             <button className="companion-close" type="button" onClick={() => setOpen(false)} aria-label="Close Companion prompt">×</button>
 
@@ -157,8 +163,17 @@ export default function WatchGate() {
               {checking ? "Checking for Companion…" : "Already installed? Check again"}
             </button>
           </section>
-        </div>
-      )}
+        </div>,
+        document.body,
+      )
+    : null;
+
+  return (
+    <>
+      <button className="button primary watch-gate-button" type="button" onClick={handleWatch} disabled={checking}>
+        {checking ? "Checking…" : "▶ Watch now"}
+      </button>
+      {prompt}
     </>
   );
 }
