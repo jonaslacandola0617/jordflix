@@ -5,16 +5,18 @@
 .companion-prompt-layer{
   position:fixed;
   inset:0;
-  z-index:180;
+  z-index:2147483000;
+  isolation:isolate;
   display:grid;
   place-items:center;
   padding:22px;
-  background:#050606b8;
+  background:#050606d1;
   backdrop-filter:blur(14px);
 }
 
 .companion-prompt{
   position:relative;
+  z-index:1;
   width:min(520px,100%);
   overflow:hidden;
   padding:30px;
