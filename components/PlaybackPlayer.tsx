@@ -116,7 +116,6 @@ export default function PlaybackPlayer({ title, embedSources = [], source, trail
             className="video-player embed-player"
             src={embedUrl}
             title={`${title} ${activeSource?.label || "Jordflix"} player`}
-            sandbox="allow-scripts allow-same-origin allow-presentation"
             allow="autoplay; encrypted-media; picture-in-picture; fullscreen"
             allowFullScreen
             referrerPolicy="strict-origin-when-cross-origin"
@@ -163,10 +162,6 @@ export default function PlaybackPlayer({ title, embedSources = [], source, trail
       {embedSources.length > 0 && (
         <div className="playback-toolbar">
           <ServerSelector sources={embedSources} value={activeSource?.id || selectedServerId} onChange={setSelectedServerId} />
-          <div className="player-protection" title="The embedded player is sandboxed without popup or top-navigation permissions.">
-            <span aria-hidden="true">◆</span>
-            <div><strong>Popup protection</strong><small>On</small></div>
-          </div>
         </div>
       )}
 
