@@ -13,7 +13,7 @@ type NavigatorWithUAData = Navigator & {
   };
 };
 
-function isDesktopChrome() {
+function isDesktopChromiumExtensionBrowser() {
   if (typeof window === "undefined" || typeof navigator === "undefined") return false;
 
   const nav = navigator as NavigatorWithUAData;
@@ -21,24 +21,24 @@ function isDesktopChrome() {
   const brands = nav.userAgentData?.brands || [];
 
   const mobileDevice = Boolean(nav.userAgentData?.mobile)
-    || /Android|iPhone|iPad|iPod|Mobile|CriOS/i.test(ua)
+    || /Android|iPhone|iPad|iPod|Mobile|CriOS|EdgiOS|FxiOS/i.test(ua)
     || (/Macintosh/i.test(ua) && navigator.maxTouchPoints > 1);
 
   if (mobileDevice) return false;
 
-  // Only show the Companion flow while Jordflix is in a desktop-sized layout.
+  // Keep the install prompt limited to Jordflix's desktop/tablet-wide layout.
   if (!window.matchMedia("(min-width: 768px)").matches) return false;
 
-  // User-Agent Client Hints give us the cleanest distinction between Google
-  // Chrome and other Chromium browsers such as Edge or Opera when available.
+  // Chromium desktop browsers commonly expose Chromium in Client Hints even
+  // when the browser brand is Chrome, Edge, Brave, Opera, Vivaldi, Arc, etc.
   if (brands.length > 0) {
-    return brands.some(item => item.brand === "Google Chrome");
+    return brands.some(item => /Chromium|Google Chrome|Microsoft Edge|Opera|Brave|Vivaldi/i.test(item.brand));
   }
 
-  // Fallback for browsers where userAgentData is unavailable.
-  const chrome = /Chrome\/\d+/i.test(ua);
-  const otherChromiumBrowser = /Edg\/|OPR\/|Opera|SamsungBrowser|YaBrowser|Vivaldi/i.test(ua);
-  return chrome && !otherChromiumBrowser;
+  // Fallback for browsers where userAgentData is unavailable. This deliberately
+  // accepts Chrome-compatible Chromium browsers instead of Google Chrome only.
+  return /Chrome\/\d+|Chromium\/\d+|Edg\/\d+|OPR\/\d+|Opera|Vivaldi|YaBrowser/i.test(ua)
+    && !/Firefox|FxiOS|Safari\/.*Version\//i.test(ua);
 }
 
 function markerPresent() {
@@ -95,9 +95,9 @@ export default function WatchGate() {
   const handleWatch = async () => {
     if (checking) return;
 
-    // Mobile Chrome and non-Chrome browsers cannot use the Chrome desktop
-    // Companion flow, so playback should never be interrupted by its prompt.
-    if (!isDesktopChrome()) {
+    // Mobile and browsers without Chrome-compatible desktop extension support
+    // should never be interrupted by a Companion installation prompt.
+    if (!isDesktopChromiumExtensionBrowser()) {
       proceed();
       return;
     }
@@ -115,7 +115,7 @@ export default function WatchGate() {
   };
 
   const checkAgain = async () => {
-    if (checking || !isDesktopChrome()) return;
+    if (checking || !isDesktopChromiumExtensionBrowser()) return;
     setChecking(true);
     const detected = await detectCompanion(600);
     setChecking(false);
@@ -134,10 +134,10 @@ export default function WatchGate() {
             <button className="companion-close" type="button" onClick={() => setOpen(false)} aria-label="Close Companion prompt">×</button>
 
             <div className="companion-mark" aria-hidden="true"><span>J</span></div>
-            <span className="eyebrow">Optional Chrome desktop protection</span>
+            <span className="eyebrow">Optional Chromium browser protection</span>
             <h2 id="companion-title">Jordflix Companion wasn’t detected.</h2>
             <p>
-              The Companion helps block popup tabs opened by configured playback servers in desktop Chrome. Jordflix still works without it, and it does not remove ads rendered inside the video frame itself.
+              The Companion helps block popup tabs opened by configured playback servers in supported desktop Chromium browsers such as Chrome, Edge, Brave, Opera, and Vivaldi. Jordflix still works without it, and it does not remove ads rendered inside the video frame itself.
             </p>
 
             <div className="companion-prompt-actions">
