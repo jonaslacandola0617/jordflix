@@ -79,10 +79,10 @@ export function playbackEmbedSources(type: MediaType, id: string | number, seaso
 }
 
 /**
- * Backward-compatible helper returning the first usable embed source.
+ * Backward-compatible helper returning the first explicitly configured embed source.
  */
 export function playbackEmbedUrl(type: MediaType, id: string | number, season = 1, episode = 1) {
-  return playbackEmbedSources(type, id, season, episode).find(source => source.url)?.url ?? null;
+  return playbackEmbedSources(type, id, season, episode).find(source => source.configured && source.url)?.url ?? null;
 }
 
 /**
