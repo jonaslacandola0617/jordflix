@@ -6,6 +6,41 @@ const PING_EVENT = "jordflix:companion:ping";
 const PONG_EVENT = "jordflix:companion:pong";
 const COMPANION_ATTR = "data-jordflix-companion";
 
+type NavigatorWithUAData = Navigator & {
+  userAgentData?: {
+    mobile?: boolean;
+    brands?: Array<{ brand: string; version: string }>;
+  };
+};
+
+function isDesktopChrome() {
+  if (typeof window === "undefined" || typeof navigator === "undefined") return false;
+
+  const nav = navigator as NavigatorWithUAData;
+  const ua = navigator.userAgent;
+  const brands = nav.userAgentData?.brands || [];
+
+  const mobileDevice = Boolean(nav.userAgentData?.mobile)
+    || /Android|iPhone|iPad|iPod|Mobile|CriOS/i.test(ua)
+    || (/Macintosh/i.test(ua) && navigator.maxTouchPoints > 1);
+
+  if (mobileDevice) return false;
+
+  // Only show the Companion flow while Jordflix is in a desktop-sized layout.
+  if (!window.matchMedia("(min-width: 768px)").matches) return false;
+
+  // User-Agent Client Hints give us the cleanest distinction between Google
+  // Chrome and other Chromium browsers such as Edge or Opera when available.
+  if (brands.length > 0) {
+    return brands.some(item => item.brand === "Google Chrome");
+  }
+
+  // Fallback for browsers where userAgentData is unavailable.
+  const chrome = /Chrome\/\d+/i.test(ua);
+  const otherChromiumBrowser = /Edg\/|OPR\/|Opera|SamsungBrowser|YaBrowser|Vivaldi/i.test(ua);
+  return chrome && !otherChromiumBrowser;
+}
+
 function markerPresent() {
   return typeof document !== "undefined" && document.documentElement.getAttribute(COMPANION_ATTR) === "ready";
 }
@@ -59,6 +94,14 @@ export default function WatchGate() {
 
   const handleWatch = async () => {
     if (checking) return;
+
+    // Mobile Chrome and non-Chrome browsers cannot use the Chrome desktop
+    // Companion flow, so playback should never be interrupted by its prompt.
+    if (!isDesktopChrome()) {
+      proceed();
+      return;
+    }
+
     setChecking(true);
     const detected = await detectCompanion();
     setChecking(false);
@@ -72,7 +115,7 @@ export default function WatchGate() {
   };
 
   const checkAgain = async () => {
-    if (checking) return;
+    if (checking || !isDesktopChrome()) return;
     setChecking(true);
     const detected = await detectCompanion(600);
     setChecking(false);
@@ -91,10 +134,10 @@ export default function WatchGate() {
             <button className="companion-close" type="button" onClick={() => setOpen(false)} aria-label="Close Companion prompt">×</button>
 
             <div className="companion-mark" aria-hidden="true"><span>J</span></div>
-            <span className="eyebrow">Optional browser protection</span>
+            <span className="eyebrow">Optional Chrome desktop protection</span>
             <h2 id="companion-title">Jordflix Companion wasn’t detected.</h2>
             <p>
-              The Companion helps block popup tabs opened by configured playback servers. Jordflix still works without it, and it does not remove ads rendered inside the video frame itself.
+              The Companion helps block popup tabs opened by configured playback servers in desktop Chrome. Jordflix still works without it, and it does not remove ads rendered inside the video frame itself.
             </p>
 
             <div className="companion-prompt-actions">
