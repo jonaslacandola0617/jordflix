@@ -6,7 +6,7 @@ import EpisodePicker from "@/components/EpisodePicker";
 import MediaRow from "@/components/MediaRow";
 import PlaybackPlayer from "@/components/PlaybackPlayer";
 import WatchProviders from "@/components/WatchProviders";
-import { playbackEmbedUrl, playbackUrl } from "@/lib/playback";
+import { playbackEmbedSources, playbackUrl } from "@/lib/playback";
 import { dateOf, defaultRegion, details, image, seasonDetails, titleOf, watchProviders, yearOf } from "@/lib/tmdb";
 import type { MediaType } from "@/lib/types";
 
@@ -55,7 +55,8 @@ export default async function TitlePage({ params, searchParams }: { params: Prom
   const selectedEpisode = type === "tv" ? Math.min(positiveInt(query.episode), maxEpisode) : 1;
   const episodeData = type === "tv" ? seasonData?.episodes?.find(episode => episode.episode_number === selectedEpisode) : undefined;
 
-  const embedUrl = playbackEmbedUrl(type, id, selectedSeason, selectedEpisode);
+  const embedSources = playbackEmbedSources(type, id, selectedSeason, selectedEpisode);
+  const hasEmbedSource = embedSources.some(source => source.configured && source.url);
   const source = playbackUrl(type, id);
   const playerPoster = episodeData?.still_path
     ? image(episodeData.still_path, "w780")
@@ -102,9 +103,9 @@ export default async function TitlePage({ params, searchParams }: { params: Prom
     <div className="detail-grid">
       <div>
         {type === "tv" && <EpisodePicker id={id} season={selectedSeason} episode={selectedEpisode} maxSeason={maxSeason} maxEpisode={maxEpisode} episodeTitle={episodeData?.name} />}
-        <PlaybackPlayer title={type === "tv" ? `${title} · S${selectedSeason}E${selectedEpisode}` : title} embedUrl={embedUrl} source={source} trailerKey={trailer} poster={playerPoster} />
-        {(embedUrl || source) && trailer ? <section className="trailer-section"><h2 className="subhead">Official trailer</h2><div className="trailer"><iframe src={`https://www.youtube-nocookie.com/embed/${trailer}`} title={`${title} official trailer`} allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowFullScreen loading="lazy"/></div></section> : null}
-        {!embedUrl && !source && !trailer ? <div className="trailer-empty"><span className="eyebrow">Trailer</span><h2 className="subhead">No official trailer listed</h2></div> : null}
+        <PlaybackPlayer title={type === "tv" ? `${title} · S${selectedSeason}E${selectedEpisode}` : title} embedSources={embedSources} source={source} trailerKey={trailer} poster={playerPoster} />
+        {(hasEmbedSource || source) && trailer ? <section className="trailer-section"><h2 className="subhead">Official trailer</h2><div className="trailer"><iframe src={`https://www.youtube-nocookie.com/embed/${trailer}`} title={`${title} official trailer`} allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowFullScreen loading="lazy"/></div></section> : null}
+        {!hasEmbedSource && !source && !trailer ? <div className="trailer-empty"><span className="eyebrow">Trailer</span><h2 className="subhead">No official trailer listed</h2></div> : null}
         {cast.length > 0 && <><h2 className="cast-heading">Top cast</h2><div className="cast-list">{cast.map(person => <span key={person.id}>{person.name}{person.character ? ` · ${person.character}` : ""}</span>)}</div></>}
       </div>
       <WatchProviders data={providers} region={defaultRegion}/>

@@ -2,6 +2,14 @@ import type { MediaType } from "@/lib/types";
 
 const DEFAULT_MOVIE_EMBED_TEMPLATE = "https://player.sample/embed/movie/{id}";
 const DEFAULT_TV_EMBED_TEMPLATE = "https://player.sample/embed/tv/{id}/{season}/{episode}";
+const PLAYBACK_SERVER_COUNT = 7;
+
+export type PlaybackEmbedSource = {
+  id: string;
+  label: string;
+  url: string | null;
+  configured: boolean;
+};
 
 function validHttpUrl(value: string) {
   try {
@@ -21,31 +29,60 @@ function fillTemplate(template: string, values: Record<string, string | number>)
   return validHttpUrl(resolved);
 }
 
+function serverTemplate(type: MediaType, server: number) {
+  const scopedKey = `PLAYBACK_SERVER_${server}_${type === "movie" ? "MOVIE" : "TV"}_TEMPLATE`;
+  const scopedTemplate = process.env[scopedKey]?.trim();
+  if (scopedTemplate) return { template: scopedTemplate, configured: true };
+
+  if (server !== 1) return { template: "", configured: false };
+
+  const legacyTemplate = type === "movie"
+    ? process.env.PLAYBACK_MOVIE_EMBED_TEMPLATE?.trim()
+    : process.env.PLAYBACK_TV_EMBED_TEMPLATE?.trim();
+
+  if (legacyTemplate) return { template: legacyTemplate, configured: true };
+
+  return {
+    template: type === "movie" ? DEFAULT_MOVIE_EMBED_TEMPLATE : DEFAULT_TV_EMBED_TEMPLATE,
+    configured: false,
+  };
+}
+
 /**
- * Resolves a VidSrc-style self-hosted embed page.
+ * Returns seven configurable self-hosted embed slots for Jordflix.
  *
- * Defaults are intentionally the non-working sample structures used while developing Jordflix:
- *   movie: https://player.sample/embed/movie/{id}
- *   tv:    https://player.sample/embed/tv/{id}/{season}/{episode}
+ * Server 1 remains backward compatible with the original env vars:
+ * PLAYBACK_MOVIE_EMBED_TEMPLATE / PLAYBACK_TV_EMBED_TEMPLATE.
  *
- * Override them locally or in Vercel with:
- * PLAYBACK_MOVIE_EMBED_TEMPLATE=https://your-player.example/embed/movie/{id}
- * PLAYBACK_TV_EMBED_TEMPLATE=https://your-player.example/embed/tv/{id}/{season}/{episode}
+ * Servers 1-7 can also use the scalable form:
+ * PLAYBACK_SERVER_1_MOVIE_TEMPLATE=...
+ * PLAYBACK_SERVER_1_TV_TEMPLATE=...
+ * ...through PLAYBACK_SERVER_7_...
+ *
+ * Optional labels can be customized with PLAYBACK_SERVER_1_LABEL, etc.
+ */
+export function playbackEmbedSources(type: MediaType, id: string | number, season = 1, episode = 1): PlaybackEmbedSource[] {
+  const values = { type, id, tmdbId: id, season, episode };
+
+  return Array.from({ length: PLAYBACK_SERVER_COUNT }, (_, index) => {
+    const server = index + 1;
+    const { template, configured } = serverTemplate(type, server);
+    const label = process.env[`PLAYBACK_SERVER_${server}_LABEL`]?.trim() || `Server ${server}`;
+
+    return {
+      id: `server-${server}`,
+      label,
+      url: template ? fillTemplate(template, values) : null,
+      configured,
+    };
+  });
+}
+
+/**
+ * Backward-compatible helper returning the first explicitly configured embed source.
  */
 export function playbackEmbedUrl(type: MediaType, id: string | number, season = 1, episode = 1) {
-  const template = type === "movie"
-    ? (process.env.PLAYBACK_MOVIE_EMBED_TEMPLATE ?? DEFAULT_MOVIE_EMBED_TEMPLATE).trim()
-    : (process.env.PLAYBACK_TV_EMBED_TEMPLATE ?? DEFAULT_TV_EMBED_TEMPLATE).trim();
-
-  if (!template) return null;
-
-  return fillTemplate(template, {
-    type,
-    id,
-    tmdbId: id,
-    season,
-    episode,
-  });
+  return playbackEmbedSources(type, id, season, episode).find(source => source.configured && source.url)?.url ?? null;
 }
 
 /**
