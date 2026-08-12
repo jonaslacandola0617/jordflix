@@ -5,6 +5,7 @@ import BackButton from "@/components/BackButton";
 import EpisodePicker from "@/components/EpisodePicker";
 import MediaRow from "@/components/MediaRow";
 import PlaybackPlayer from "@/components/PlaybackPlayer";
+import WatchGate from "@/components/WatchGate";
 import WatchProviders from "@/components/WatchProviders";
 import { playbackEmbedSources, playbackUrl } from "@/lib/playback";
 import { dateOf, defaultRegion, details, image, seasonDetails, titleOf, watchProviders, yearOf } from "@/lib/tmdb";
@@ -96,7 +97,7 @@ export default async function TitlePage({ params, searchParams }: { params: Prom
         {facts.length > 0 && <div className="detail-facts">{facts.map(fact => <span key={fact}>{fact}</span>)}</div>}
         <p>{item.overview}</p>
         {item.tagline && <p className="tagline"><em>“{item.tagline}”</em></p>}
-        <div className="detail-actions"><a className="button primary" href="#watch">▶ Watch now</a></div>
+        <div className="detail-actions"><WatchGate /></div>
       </div>
     </section>
 
