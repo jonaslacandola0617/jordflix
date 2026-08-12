@@ -1,0 +1,136 @@
+/* Jordflix Companion install prompt */
+.watch-gate-button{border:0;cursor:pointer}
+.watch-gate-button:disabled{cursor:wait;opacity:.78}
+
+.companion-prompt-layer{
+  position:fixed;
+  inset:0;
+  z-index:180;
+  display:grid;
+  place-items:center;
+  padding:22px;
+  background:#050606b8;
+  backdrop-filter:blur(14px);
+}
+
+.companion-prompt{
+  position:relative;
+  width:min(520px,100%);
+  overflow:hidden;
+  padding:30px;
+  border:1px solid #ffffff17;
+  border-radius:24px;
+  background:
+    radial-gradient(circle at 82% 0%,#ff604714,transparent 34%),
+    linear-gradient(145deg,#121313,#090a0a 72%);
+  box-shadow:0 34px 110px #000000a0;
+}
+
+.companion-prompt::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  background-image:linear-gradient(#ffffff08 1px,transparent 1px),linear-gradient(90deg,#ffffff08 1px,transparent 1px);
+  background-size:52px 52px;
+  mask-image:linear-gradient(135deg,#0008,transparent 64%);
+}
+
+.companion-close{
+  position:absolute;
+  top:14px;
+  right:14px;
+  z-index:2;
+  width:38px;
+  height:38px;
+  border:1px solid #ffffff16;
+  border-radius:50%;
+  background:#0a0b0ba8;
+  color:#aaa79f;
+  cursor:pointer;
+  font-size:22px;
+  line-height:1;
+  transition:border-color .2s,background .2s,color .2s,transform .2s;
+}
+
+.companion-close:hover{border-color:#ffffff30;background:#151616;color:#fff;transform:rotate(4deg)}
+.companion-close:focus-visible{outline:2px solid #ff6047;outline-offset:3px}
+
+.companion-mark{
+  position:relative;
+  z-index:1;
+  width:48px;
+  height:48px;
+  display:grid;
+  place-items:center;
+  margin-bottom:22px;
+  border-radius:50%;
+  background:#ff6047;
+  color:#080909;
+  box-shadow:0 0 40px #ff604736;
+}
+
+.companion-mark span{font-family:var(--font-display);font-size:30px;font-style:italic;font-weight:700;transform:translateY(-1px)}
+.companion-prompt>.eyebrow{position:relative;z-index:1;color:#ff806c}
+
+.companion-prompt h2{
+  position:relative;
+  z-index:1;
+  margin:10px 46px 12px 0;
+  color:#f2efe8;
+  font-family:var(--font-display);
+  font-size:clamp(30px,5vw,43px);
+  font-weight:500;
+  letter-spacing:-.045em;
+  line-height:1.02;
+}
+
+.companion-prompt p{
+  position:relative;
+  z-index:1;
+  max-width:455px;
+  margin:0;
+  color:#a7a49d;
+  font-size:14px;
+  line-height:1.72;
+}
+
+.companion-prompt-actions{
+  position:relative;
+  z-index:1;
+  display:flex;
+  gap:9px;
+  flex-wrap:wrap;
+  margin-top:24px;
+}
+
+.companion-install,.companion-continue{border:0;cursor:pointer}
+.companion-install:disabled{cursor:not-allowed;opacity:.45}
+.companion-recheck{
+  position:relative;
+  z-index:1;
+  margin-top:15px;
+  padding:0;
+  border:0;
+  background:transparent;
+  color:#85827b;
+  cursor:pointer;
+  font-size:11px;
+  font-weight:800;
+  letter-spacing:.06em;
+  text-transform:uppercase;
+}
+.companion-recheck:hover{color:#ff806b}
+.companion-recheck:disabled{cursor:wait;opacity:.55}
+.companion-recheck:focus-visible{outline:2px solid #ff6047;outline-offset:4px}
+
+@media(max-width:600px){
+  .companion-prompt-layer{align-items:end;padding:12px}
+  .companion-prompt{padding:24px 20px 22px;border-radius:20px}
+  .companion-mark{width:43px;height:43px;margin-bottom:18px}
+  .companion-mark span{font-size:27px}
+  .companion-prompt h2{font-size:31px;margin-right:38px}
+  .companion-prompt p{font-size:13.5px}
+  .companion-prompt-actions{display:grid;grid-template-columns:1fr;margin-top:21px}
+  .companion-install,.companion-continue{width:100%}
+}
