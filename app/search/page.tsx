@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import MediaCard from "@/components/MediaCard";
 import Pagination from "@/components/Pagination";
+import SearchForm from "@/components/SearchForm";
 import { searchMulti } from "@/lib/tmdb";
 
 export const metadata: Metadata = {
@@ -22,7 +23,7 @@ export default async function SearchPage({ searchParams }: { searchParams: Promi
   return (
     <div className="page-shell">
       <header className="page-hero"><span className="eyebrow">Search Jordflix</span><h1 className="page-title">Find it.</h1><p className="page-intro">Search movies and series, then check where each title is currently available in your region.</p></header>
-      <form className="search-form" action="/search"><input autoFocus name="q" defaultValue={q} placeholder="Movie or series" aria-label="Search movies and TV series"/><button aria-label="Submit search">→</button></form>
+      <SearchForm defaultQuery={q} />
       {data?.results.length ? <><section className="catalog">{data.results.map(item => <MediaCard key={`${item.media_type}-${item.id}`} item={item} type={(item.media_type || "movie") as "movie" | "tv"}/>)}</section><Pagination page={page} totalPages={data.total_pages} basePath="/search" query={{ q: query }} /></> : query ? <p className="empty">Nothing matched “{query}”. Try another title.</p> : <p className="empty">Search movies and series across TMDB.</p>}
     </div>
   );
