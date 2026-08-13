@@ -18,9 +18,9 @@ export default function Pagination({ page, totalPages, basePath, query = {} }: P
 
   return (
     <nav className="pagination" aria-label="Pagination">
-      {page > 1 ? <Link className="pagination-link" href={href(page - 1)}>← Previous</Link> : <span />}
+      {page > 1 ? <Link replace className="pagination-link" href={href(page - 1)}>← Previous</Link> : <span />}
       <span className="pagination-status">Page {page} <i>/</i> {lastPage}</span>
-      {page < lastPage ? <Link className="pagination-link" href={href(page + 1)}>Next →</Link> : <span />}
+      {page < lastPage ? <Link replace className="pagination-link" href={href(page + 1)}>Next →</Link> : <span />}
     </nav>
   );
 }
