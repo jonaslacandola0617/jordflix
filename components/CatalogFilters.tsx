@@ -91,7 +91,8 @@ export default function CatalogFilters({ basePath, sort, genre = "", country = "
     if (sort) params.set("sort", sort);
     if (selectedGenre) params.set("genre", selectedGenre);
     if (selectedCountry) params.set("country", selectedCountry);
-    router.push(`${basePath}?${params.toString()}`);
+    const query = params.toString();
+    router.replace(query ? `${basePath}?${query}` : basePath);
   }
 
   return (
@@ -103,7 +104,7 @@ export default function CatalogFilters({ basePath, sort, genre = "", country = "
       <Dropdown label="Genre" value={selectedGenre} options={genreOptions} onChange={setSelectedGenre} />
       <Dropdown label="Country" value={selectedCountry} options={countryOptions} onChange={setSelectedCountry} />
       <button className="catalog-apply" type="button" onClick={applyFilters}>Apply</button>
-      {hasFilters && <Link className="catalog-clear" href={{ pathname: basePath, query: { sort } }}>Reset</Link>}
+      {hasFilters && <Link replace className="catalog-clear" href={{ pathname: basePath, query: { sort } }}>Reset</Link>}
     </div>
   );
 }
