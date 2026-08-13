@@ -70,6 +70,7 @@ export default async function MoviesPage({ searchParams }: { searchParams: Promi
         <nav className="filter-pills catalog-sort-row" aria-label="Sort movies">
           {Object.entries(sorts).map(([key, value]) => (
             <Link
+              replace
               key={key}
               className={`pill ${activeSort === key ? "active" : ""}`}
               href={{ pathname: "/movies", query: { sort: key, genre: activeGenre || undefined, country: activeCountry || undefined } }}
