@@ -16,7 +16,8 @@ export default function BackButton({ fallback }: { fallback: string }) {
       // Fall through to the catalog route.
     }
 
-    router.push(fallback);
+    // A fallback is a recovery destination, not a new navigation step.
+    router.replace(fallback);
   }
 
   return (
