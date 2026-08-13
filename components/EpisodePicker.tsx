@@ -83,7 +83,9 @@ export default function EpisodePicker({ id, season, episode, maxSeason, maxEpiso
   const router = useRouter();
 
   function goTo(nextSeason: number, nextEpisode: number) {
-    router.push(`/title/tv/${id}?season=${nextSeason}&episode=${nextEpisode}#watch`);
+    // Season and episode are state within this title, not separate navigation steps.
+    // Replacing the current entry keeps Back focused on the page the viewer came from.
+    router.replace(`/title/tv/${id}?season=${nextSeason}&episode=${nextEpisode}#watch`);
   }
 
   return (
