@@ -23,8 +23,8 @@ export default function CompactPagination({ page, totalPages, basePath, query = 
         <strong>{page}<i>/</i>{lastPage}</strong>
       </div>
       <div className="compact-page-actions">
-        {page > 1 ? <Link className="compact-page-button" href={href(page - 1)} aria-label="Previous page">←</Link> : <span className="compact-page-button disabled" aria-hidden="true">←</span>}
-        {page < lastPage ? <Link className="compact-page-button" href={href(page + 1)} aria-label="Next page">→</Link> : <span className="compact-page-button disabled" aria-hidden="true">→</span>}
+        {page > 1 ? <Link replace className="compact-page-button" href={href(page - 1)} aria-label="Previous page">←</Link> : <span className="compact-page-button disabled" aria-hidden="true">←</span>}
+        {page < lastPage ? <Link replace className="compact-page-button" href={href(page + 1)} aria-label="Next page">→</Link> : <span className="compact-page-button disabled" aria-hidden="true">→</span>}
       </div>
     </nav>
   );
