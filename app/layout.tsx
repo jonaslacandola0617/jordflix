@@ -10,6 +10,7 @@ import "./touch-audit.css";
 import "./ux-fixes.css";
 import "./player-sources.css";
 import "./companion.css";
+import "./media-rail.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 
