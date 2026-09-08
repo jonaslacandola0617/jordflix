@@ -10,7 +10,14 @@ type MediaRailProps = {
 
 export default function MediaRail({ children, label }: MediaRailProps) {
   const railRef = useRef<HTMLDivElement>(null);
-  const dragRef = useRef({ active: false, startX: 0, startScrollLeft: 0, moved: false });
+  const dragRef = useRef({
+    active: false,
+    captured: false,
+    startX: 0,
+    startScrollLeft: 0,
+    moved: false,
+  });
+  const suppressClickRef = useRef(false);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(false);
   const [dragging, setDragging] = useState(false);
@@ -49,12 +56,11 @@ export default function MediaRail({ children, label }: MediaRailProps) {
 
     dragRef.current = {
       active: true,
+      captured: false,
       startX: event.clientX,
       startScrollLeft: rail.scrollLeft,
       moved: false,
     };
-    setDragging(true);
-    rail.setPointerCapture(event.pointerId);
   };
 
   const handlePointerMove = (event: ReactPointerEvent<HTMLDivElement>) => {
@@ -63,16 +69,41 @@ export default function MediaRail({ children, label }: MediaRailProps) {
     if (!rail || !drag.active) return;
 
     const delta = event.clientX - drag.startX;
-    if (Math.abs(delta) > 5) drag.moved = true;
+
+    if (!drag.moved && Math.abs(delta) <= 6) return;
+
+    if (!drag.moved) {
+      drag.moved = true;
+      setDragging(true);
+      rail.setPointerCapture(event.pointerId);
+      drag.captured = true;
+    }
+
+    event.preventDefault();
     rail.scrollLeft = drag.startScrollLeft - delta;
   };
 
   const endDrag = (event: ReactPointerEvent<HTMLDivElement>) => {
     const rail = railRef.current;
-    if (!rail || !dragRef.current.active) return;
-    dragRef.current.active = false;
+    const drag = dragRef.current;
+    if (!rail || !drag.active) return;
+
+    const moved = drag.moved;
+    drag.active = false;
+    drag.moved = false;
     setDragging(false);
-    if (rail.hasPointerCapture(event.pointerId)) rail.releasePointerCapture(event.pointerId);
+
+    if (drag.captured && rail.hasPointerCapture(event.pointerId)) {
+      rail.releasePointerCapture(event.pointerId);
+    }
+    drag.captured = false;
+
+    if (moved) {
+      suppressClickRef.current = true;
+      window.setTimeout(() => {
+        suppressClickRef.current = false;
+      }, 0);
+    }
   };
 
   return (
@@ -96,10 +127,10 @@ export default function MediaRail({ children, label }: MediaRailProps) {
         onPointerUp={endDrag}
         onPointerCancel={endDrag}
         onClickCapture={event => {
-          if (!dragRef.current.moved) return;
+          if (!suppressClickRef.current) return;
           event.preventDefault();
           event.stopPropagation();
-          dragRef.current.moved = false;
+          suppressClickRef.current = false;
         }}
       >
         {children}
