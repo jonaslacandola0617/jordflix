@@ -32,6 +32,19 @@ export function communityActivityEnabled() {
   return Boolean(process.env.DATABASE_URL?.trim());
 }
 
+export async function activityHealth() {
+  const db = database();
+  if (!db) return { configured: false, reachable: false };
+
+  try {
+    await ensureSchema(db);
+    await db.execute(sql`SELECT 1 AS ok`);
+    return { configured: true, reachable: true };
+  } catch {
+    return { configured: true, reachable: false };
+  }
+}
+
 export async function recordWatchActivity(type: MediaType, item: MediaItem) {
   const db = database();
   if (!db) return false;
