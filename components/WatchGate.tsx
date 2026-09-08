@@ -2,6 +2,8 @@
 
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
+import { rememberWatch } from "@/lib/watch-history";
+import type { MediaItem, MediaType } from "@/lib/types";
 
 const PING_EVENT = "jordflix:companion:ping";
 const PONG_EVENT = "jordflix:companion:pong";
@@ -26,18 +28,12 @@ function isDesktopChromiumExtensionBrowser() {
     || (/Macintosh/i.test(ua) && navigator.maxTouchPoints > 1);
 
   if (mobileDevice) return false;
-
-  // Keep the install prompt limited to Jordflix's desktop/tablet-wide layout.
   if (!window.matchMedia("(min-width: 768px)").matches) return false;
 
-  // Chromium desktop browsers commonly expose Chromium in Client Hints even
-  // when the browser brand is Chrome, Edge, Brave, Opera, Vivaldi, Arc, etc.
   if (brands.length > 0) {
     return brands.some(item => /Chromium|Google Chrome|Microsoft Edge|Opera|Brave|Vivaldi/i.test(item.brand));
   }
 
-  // Fallback for browsers where userAgentData is unavailable. This deliberately
-  // accepts Chrome-compatible Chromium browsers instead of Google Chrome only.
   return /Chrome\/\d+|Chromium\/\d+|Edg\/\d+|OPR\/\d+|Opera|Vivaldi|YaBrowser/i.test(ua)
     && !/Firefox|FxiOS|Safari\/.*Version\//i.test(ua);
 }
@@ -74,7 +70,7 @@ function scrollToPlayer() {
   });
 }
 
-export default function WatchGate() {
+export default function WatchGate({ item, type }: { item: MediaItem; type: MediaType }) {
   const [open, setOpen] = useState(false);
   const [checking, setChecking] = useState(false);
   const installUrl = process.env.NEXT_PUBLIC_JORDFLIX_EXTENSION_URL?.trim() || "";
@@ -96,7 +92,20 @@ export default function WatchGate() {
     };
   }, [open]);
 
+  const registerWatch = () => {
+    const shouldCount = rememberWatch(type, item);
+    if (!shouldCount) return;
+
+    void fetch("/api/activity/watch", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ type, item }),
+      keepalive: true,
+    }).catch(() => undefined);
+  };
+
   const proceed = () => {
+    registerWatch();
     setOpen(false);
     scrollToPlayer();
   };
@@ -104,8 +113,6 @@ export default function WatchGate() {
   const handleWatch = async () => {
     if (checking) return;
 
-    // Mobile and browsers without Chrome-compatible desktop extension support
-    // should never be interrupted by a Companion installation prompt.
     if (!isDesktopChromiumExtensionBrowser()) {
       proceed();
       return;
