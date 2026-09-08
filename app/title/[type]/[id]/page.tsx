@@ -9,7 +9,7 @@ import WatchGate from "@/components/WatchGate";
 import WatchProviders from "@/components/WatchProviders";
 import { playbackEmbedSources, playbackUrl } from "@/lib/playback";
 import { dateOf, defaultRegion, details, image, seasonDetails, titleOf, watchProviders, yearOf } from "@/lib/tmdb";
-import type { MediaType } from "@/lib/types";
+import type { MediaItem, MediaType } from "@/lib/types";
 
 function isType(value: string): value is MediaType { return value === "movie" || value === "tv"; }
 function trailerKey(videos: Awaited<ReturnType<typeof details>>["videos"]) { const all = videos?.results || []; return all.find(v => v.site === "YouTube" && v.type === "Trailer" && v.official)?.key || all.find(v => v.site === "YouTube" && v.type === "Trailer")?.key || all.find(v => v.site === "YouTube")?.key; }
@@ -74,6 +74,24 @@ export default async function TitlePage({ params, searchParams }: { params: Prom
     item.status || null,
   ].filter(Boolean) as string[];
 
+  const watchItem: MediaItem = {
+    id: item.id,
+    media_type: type,
+    title: item.title,
+    name: item.name,
+    original_title: item.original_title,
+    original_name: item.original_name,
+    overview: item.overview,
+    poster_path: item.poster_path,
+    backdrop_path: item.backdrop_path,
+    release_date: item.release_date,
+    first_air_date: item.first_air_date,
+    vote_average: item.vote_average,
+    vote_count: item.vote_count,
+    popularity: item.popularity,
+    genre_ids: item.genre_ids,
+  };
+
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": type === "movie" ? "Movie" : "TVSeries",
@@ -97,7 +115,7 @@ export default async function TitlePage({ params, searchParams }: { params: Prom
         {facts.length > 0 && <div className="detail-facts">{facts.map(fact => <span key={fact}>{fact}</span>)}</div>}
         <p>{item.overview}</p>
         {item.tagline && <p className="tagline"><em>“{item.tagline}”</em></p>}
-        <div className="detail-actions"><WatchGate /></div>
+        <div className="detail-actions"><WatchGate item={watchItem} type={type} /></div>
       </div>
     </section>
 
