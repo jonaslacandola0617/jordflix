@@ -7,6 +7,8 @@ export const defaultRegion = process.env.DEFAULT_REGION || "PH";
 
 export type TmdbGenre = { id: number; name: string };
 export type TmdbCountry = { iso_3166_1: string; english_name: string; native_name?: string };
+export type TrendingType = MediaType | "all";
+export type TrendingWindow = "day" | "week";
 
 function authHeaders(): HeadersInit {
   return token ? { Authorization: `Bearer ${token}`, Accept: "application/json" } : { Accept: "application/json" };
@@ -33,8 +35,7 @@ const watchable = {
 };
 
 export async function discover(type: MediaType, page = 1, sortBy = "popularity.desc", extra: Record<string, string | number | boolean | undefined> = {}) {
-  const data = await tmdb<{ results: MediaItem[]; total_pages: number }>(`/discover/${type}`, { ...watchable, sort_by: sortBy, page, ...extra });
-  return data;
+  return tmdb<{ results: MediaItem[]; total_pages: number }>(`/discover/${type}`, { ...watchable, sort_by: sortBy, page, ...extra });
 }
 
 export async function genres(type: MediaType) {
@@ -49,9 +50,16 @@ export async function countries() {
     .sort((a, b) => a.english_name.localeCompare(b.english_name));
 }
 
-export async function trending(type: MediaType = "movie") {
-  const data = await tmdb<{ results: MediaItem[] }>(`/trending/${type}/week`);
-  return data.results;
+export async function trending(type: TrendingType = "all", window: TrendingWindow = "day") {
+  const data = await tmdb<{ results: MediaItem[] }>(`/trending/${type}/${window}`, {}, window === "day" ? 900 : 3600);
+  return data.results.filter(item => item.media_type === "movie" || item.media_type === "tv");
+}
+
+export async function recommendations(type: MediaType, id: string | number) {
+  const data = await tmdb<{ results: MediaItem[] }>(`/${type}/${id}/recommendations`, { language: "en-US" }, 1800);
+  return data.results
+    .filter(item => item.poster_path)
+    .map(item => ({ ...item, media_type: type }));
 }
 
 export async function details(type: MediaType, id: string | number) {
