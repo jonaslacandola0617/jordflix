@@ -1,4 +1,5 @@
 import Link from "next/link";
+import QueueButton from "@/components/QueueButton";
 
 export default function Header() {
   return (
@@ -9,6 +10,7 @@ export default function Header() {
       <nav className="nav-links" aria-label="Primary navigation">
         <Link href="/movies">Movies</Link>
         <Link href="/series">Series</Link>
+        <QueueButton />
         <Link href="/search" className="search-link" aria-label="Search">⌕ <span>Search</span></Link>
       </nav>
     </header>
