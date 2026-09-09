@@ -5,6 +5,8 @@ import BackButton from "@/components/BackButton";
 import EpisodePicker from "@/components/EpisodePicker";
 import MediaRow from "@/components/MediaRow";
 import PlaybackPlayer from "@/components/PlaybackPlayer";
+import QueueAddButton from "@/components/QueueAddButton";
+import QueueNextControl from "@/components/QueueNextControl";
 import WatchGate from "@/components/WatchGate";
 import WatchProviders from "@/components/WatchProviders";
 import { playbackEmbedSources, playbackUrl } from "@/lib/playback";
@@ -115,7 +117,16 @@ export default async function TitlePage({ params, searchParams }: { params: Prom
         {facts.length > 0 && <div className="detail-facts">{facts.map(fact => <span key={fact}>{fact}</span>)}</div>}
         <p>{item.overview}</p>
         {item.tagline && <p className="tagline"><em>“{item.tagline}”</em></p>}
-        <div className="detail-actions"><WatchGate item={watchItem} type={type} /></div>
+        <div className="detail-actions">
+          <WatchGate item={watchItem} type={type} />
+          <QueueAddButton
+            item={watchItem}
+            type={type}
+            season={type === "tv" ? selectedSeason : undefined}
+            episode={type === "tv" ? selectedEpisode : undefined}
+            episodeTitle={episodeData?.name}
+          />
+        </div>
       </div>
     </section>
 
@@ -123,6 +134,12 @@ export default async function TitlePage({ params, searchParams }: { params: Prom
       <div>
         {type === "tv" && <EpisodePicker id={id} season={selectedSeason} episode={selectedEpisode} maxSeason={maxSeason} maxEpisode={maxEpisode} episodeTitle={episodeData?.name} />}
         <PlaybackPlayer title={type === "tv" ? `${title} · S${selectedSeason}E${selectedEpisode}` : title} embedSources={embedSources} source={source} trailerKey={trailer} poster={playerPoster} />
+        <QueueNextControl
+          type={type}
+          tmdbId={item.id}
+          season={type === "tv" ? selectedSeason : undefined}
+          episode={type === "tv" ? selectedEpisode : undefined}
+        />
         {(hasEmbedSource || source) && trailer ? <section className="trailer-section"><h2 className="subhead">Official trailer</h2><div className="trailer"><iframe src={`https://www.youtube-nocookie.com/embed/${trailer}`} title={`${title} official trailer`} allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowFullScreen loading="lazy"/></div></section> : null}
         {!hasEmbedSource && !source && !trailer ? <div className="trailer-empty"><span className="eyebrow">Trailer</span><h2 className="subhead">No official trailer listed</h2></div> : null}
         {cast.length > 0 && <><h2 className="cast-heading">Top cast</h2><div className="cast-list">{cast.map(person => <span key={person.id}>{person.name}{person.character ? ` · ${person.character}` : ""}</span>)}</div></>}
